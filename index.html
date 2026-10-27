@@ -85,6 +85,7 @@ h2{font-size:15px;margin:0 0 8px}
 .chk{flex-direction:row!important;align-items:center;gap:8px!important;color:var(--ink)!important;font-size:15px!important}.chk input{width:auto}
 .ed{border-top:0;padding:0}
 nav button{font-size:11px}
+.tl{color:var(--ink);font-weight:700;font-size:15px}
 details.l>summary{padding:6px 0}
 </style>
 </head>
@@ -103,6 +104,7 @@ details.l>summary{padding:6px 0}
   </section>
   <section class="card" id="hl" hidden></section>
   <section class="card next" id="next"></section>
+  <section class="card" id="rl"></section>
   <section class="card">
     <h2>I saved money</h2>
     <div class="row"><input class="big" id="amt" type="number" inputmode="numeric" min="1" placeholder="Amount in DA" aria-label="Amount saved in DA"><button id="add">Add</button></div>
@@ -159,6 +161,8 @@ const dd=x=>Math.round((x-sod())/864e5);
 const allItems=()=>state.goals.flatMap(g=>g.items);
 const done=i=>Math.min(i.p,i.t);
 const sum=(arr,f)=>arr.reduce((a,x)=>a+f(x),0);
+const A=()=>state.cfg.a||"Me",B=()=>state.cfg.b||"Her";
+const hs=i=>Math.min(i.hs||0,i.t),WHO=w=>w==="me"?A():w==="her"?B():"Both";
 /* loans */
 const paid=l=>sum(l.pays,p=>p.a),bal=l=>Math.max(0,l.amt-paid(l)),nm=l=>l.pays.filter(p=>p.k==="m").length;
 const due=(l,n)=>{const[y,m,d]=l.fd.split("-").map(Number);const x=new Date(y,m-1+n,1);x.setDate(Math.min(d,new Date(y,m+n,0).getDate()));return x};
@@ -176,6 +180,8 @@ function render(){
   $("hs").textContent=[names,k===null?"":k>0?k+" days to the wedding":k===0?"Today is the wedding!":"Married "+(-k)+" days ago"].filter(Boolean).join(" · ");
   const nx=allItems().find(i=>i.p<i.t),ng=nx&&state.goals.find(g=>g.items.includes(nx));
   $("next").innerHTML=nx?`<div class="sub" style="text-align:left;margin:0">Next to pay</div><b>${esc(nx.n)}</b><div class="gm"><span>${esc(ng.n)}</span><span>${fmt(nx.t-nx.p)} DA left</span></div>`:'<b>All paid</b>';
+  {const its=allItems(),H=sum(its,hs),op=its.filter(i=>i.p<i.t),cn=w=>op.filter(i=>(i.w||"both")===w).length;
+  $("rl").innerHTML=`<h2>Our roles</h2><div class="gm tl"><span>${esc(A())}: ${fmt(T-H)} DA</span><span>${esc(B())}: ${fmt(H)} DA</span></div><div class="gm"><span>Open tasks: ${esc(A())} ${cn("me")}</span><span>${esc(B())} ${cn("her")} · Both ${cn("both")}</span></div>`}
   $("hl").hidden=!state.loans.length;
   $("hl").innerHTML="<h2>Loans</h2>"+state.loans.map(l=>{const[t,cl]=dueTxt(l);return `<div class="log"><div><b>${esc(l.who)}</b> · ${fmt(bal(l))} DA left<small class="due ${cl}" style="margin:2px 0 0">${t}</small></div>${bal(l)?`<button data-act="lp" data-l="${l.id}">Pay</button>`:""}</div>`}).join("");
   $("minis").innerHTML=state.goals.map(g=>{const gt=sum(g.items,i=>i.t),gp=sum(g.items,done),pc=gt?gp/gt*100:0;return `<div class="mini"><span class="nm">${esc(g.n)}</span><div class="bar"><i style="width:${pc}%"></i></div><span class="pc">${Math.floor(pc)}%</span></div>`}).join("");
@@ -185,11 +191,13 @@ function render(){
   $("goals").innerHTML=state.goals.map(g=>{
     const gt=sum(g.items,i=>i.t),gp=sum(g.items,done),pc=gt?gp/gt*100:0;
     const rows=g.items.map(i=>{const ip=i.t?done(i)/i.t*100:0,ok=i.p>=i.t&&i.t;
-      return `<button class="it ${ok?"ok":""}" data-act="ei" data-g="${g.id}" data-i="${i.id}"><span class="gh"><span class="gn">${esc(i.n)}</span><span class="gp">${Math.floor(ip)}%</span></span><span class="bar s"><i style="width:${ip}%"></i></span><span class="gm"><span>${fmt(done(i))} / ${fmt(i.t)} DA</span><span>${ok?"Paid":fmt(i.t-i.p)+" left · tap to add"}</span></span></button>`}).join("");
+      return `<button class="it ${ok?"ok":""}" data-act="ei" data-g="${g.id}" data-i="${i.id}"><span class="gh"><span class="gn">${esc(i.n)}</span><span class="gp">${Math.floor(ip)}%</span></span><span class="bar s"><i style="width:${ip}%"></i></span><span class="gm"><span>${fmt(done(i))} / ${fmt(i.t)} DA</span><span>${ok?"Paid":fmt(i.t-i.p)+" left · tap to add"}</span></span><span class="gm"><span>${esc(WHO(i.w||"both"))}${i.tk?" · "+esc(i.tk):""}</span><span>${hs(i)?esc(A())+" "+fmt(i.t-hs(i))+" · "+esc(B())+" "+fmt(hs(i)):""}</span></span></button>`}).join("");
     const isOpen=first?g===state.goals[0]||g===cur:open.has(g.id);
     return `<details class="goal" data-g="${g.id}" ${isOpen?"open":""}><summary><div class="gh"><span class="gn">${esc(g.n)}</span><span class="gp">${Math.floor(pc)}% <button class="g" data-act="eg" data-g="${g.id}" aria-label="Edit goal">✏️</button></span></div>
     <div class="bar"><i style="width:${pc}%"></i></div>
-    <div class="gm"><span>${fmt(gp)} / ${fmt(gt)} DA</span><span>${gp>=gt&&gt?"Paid":fmt(gt-gp)+" left"}</span></div>
+    <div class="gm tl"><span>Total</span><span>${fmt(gt)} DA</span></div>
+    <div class="gm"><span>${fmt(gp)} saved</span><span>${gp>=gt&&gt?"Paid":fmt(gt-gp)+" left"}</span></div>
+    ${sum(g.items,hs)?`<div class="gm"><span>${esc(A())}: ${fmt(gt-sum(g.items,hs))} DA</span><span>${esc(B())}: ${fmt(sum(g.items,hs))} DA</span></div>`:""}
     <div class="gm"><span>${esc(g.d)}</span><span class="now">${cur&&cur.id===g.id?"Saving for this now":""}</span></div></summary>
     <div class="items">${rows}<button class="o" data-act="ai" data-g="${g.id}">+ Add item</button></div></details>`;
   }).join("")+`<button class="o" data-act="ag" style="margin-top:10px">+ Add big goal</button>`;
@@ -232,7 +240,7 @@ async function sched(){
 /* sheet editor */
 function sheet(t,fs,save,del){
   const s=$("sh");
-  s.innerHTML=`<div class="pn" role="dialog" aria-label="${esc(t)}"><h2>${esc(t)}</h2>${fs.map(f=>`<label>${f.l}<input id="f_${f.k}" type="${f.t||"text"}" ${f.t==="number"?'inputmode="decimal" min="0"':""} value="${esc(f.v==null?"":f.v)}"></label>`).join("")}<div class="err" id="se"></div><div class="row"><button class="g" id="sx">Cancel</button>${del?'<button class="d" id="sd">Delete</button>':""}<button id="ss" style="flex:1">Save</button></div></div>`;
+  s.innerHTML=`<div class="pn" role="dialog" aria-label="${esc(t)}"><h2>${esc(t)}</h2>${fs.map(f=>`<label>${f.l}${f.o?`<select id="f_${f.k}" style="margin:0">${f.o.map(o=>`<option value="${o[0]}"${o[0]===f.v?" selected":""}>${esc(o[1])}</option>`).join("")}</select>`:`<input id="f_${f.k}" type="${f.t||"text"}" ${f.t==="number"?'inputmode="decimal" min="0"':""} value="${esc(f.v==null?"":f.v)}">`}</label>`).join("")}<div class="err" id="se"></div><div class="row"><button class="g" id="sx">Cancel</button>${del?'<button class="d" id="sd">Delete</button>':""}<button id="ss" style="flex:1">Save</button></div></div>`;
   s.hidden=false;
   const v=k=>$("f_"+k).value,close=()=>{s.hidden=true;s.innerHTML=""};
   $("sx").onclick=close;s.onclick=e=>{if(e.target===s)close()};
@@ -241,12 +249,14 @@ function sheet(t,fs,save,del){
   setTimeout(()=>$("f_"+fs[0].k).focus(),60);
 }
 function itemSheet(g,it){
-  const nw=!it,fs=[{k:"a",l:"Add a payment now (DA)",t:"number"},{k:"n",l:"Name",v:nw?"":it.n},{k:"t",l:"Target (DA)",t:"number",v:nw?"":it.t},{k:"p",l:"Paid so far (DA)",t:"number",v:nw?0:it.p}];
+  const nw=!it,fs=[{k:"a",l:"Add a payment now (DA)",t:"number"},{k:"n",l:"Name",v:nw?"":it.n},{k:"t",l:"Target (DA)",t:"number",v:nw?"":it.t},{k:"p",l:"Paid so far (DA)",t:"number",v:nw?0:it.p},
+    {k:"w",l:"Who is responsible?",o:[["me",A()],["her",B()],["both","Both"]],v:nw?"both":it.w||"both"},{k:"h",l:"Her part of the target (DA)",t:"number",v:nw?"":it.hs||""},{k:"k",l:"Task / note (optional)",v:nw?"":it.tk||""}];
   if(nw)fs.shift();
   sheet(nw?"New item":it.n,fs,v=>{
     const n=v("n").trim(),t=num(v("t")),p=num(v("p")),a=nw?0:num(v("a"));
     if(!n)return"Enter a name.";if(!t)return"Enter the target amount.";
     if(nw){it=I(n,t,p);g.items.push(it)}else{it.n=n;it.t=t;it.p=p}
+    it.w=v("w");it.hs=Math.min(num(v("h")),t);it.tk=v("k").trim();
     if(a){it.p+=a;state.log.push({amt:a,date:today(),al:[[it.id,a]],note:it.n})}
   },nw?null:()=>{g.items=g.items.filter(x=>x!==it)});
 }
@@ -336,7 +346,6 @@ function renderShare(){
   <label class="full">Message for her<input data-c="msg" maxlength="100" value="${esc(c.msg)}"></label></div>
   <div class="sub" style="text-align:left">Colour</div><div class="sw">${Object.keys(TH).map(k=>`<button class="swb ${c.theme===k?"on":""}" data-th="${k}" style="background:rgb(${TH[k][0]})" aria-label="${k}"></button>`).join("")}</div>
   <label class="chk"><input type="checkbox" data-c="si" ${ck("si")}> Show items under each goal</label>
-  <label class="chk"><input type="checkbox" data-c="sl" ${ck("sl")}> Show the loans</label>
   <label class="chk"><input type="checkbox" data-c="sh" ${ck("sh")}> Show latest savings</label>
   <button id="pdf" style="width:100%;margin-top:10px">Create PDF and send</button></section>
   <section class="card"><h2>Backup</h2><div class="row"><button class="o" id="bk">Save backup</button><button class="o" id="rsb">Restore</button><input type="file" id="rs" accept=".json,application/json" hidden></div></section>`;
@@ -392,7 +401,7 @@ function buildPdf(){
   tx(fmt(P)+" DA saved of "+fmt(T)+" DA",205,278,14,"F2",DK);
   bar(205,288,W-80-165-10,14,p,M,WH);
   tx(T&&P>=T?"Everything is paid!":fmt(T-P)+" DA left to go",205,326,12,"F1",GR);
-  if(c.sl&&LL)tx("Loans remaining: "+fmt(LL)+" DA",205,341,11,"F1",GR);
+  {const H=sum(allItems(),hs);if(H)tx(A()+": "+fmt(T-H)+" DA   |   "+B()+": "+fmt(H)+" DA",205,341,11,"F2",M)}
   y=370;
   sec("Our goals");
   state.goals.forEach(g=>{
@@ -400,26 +409,15 @@ function buildPdf(){
     need(58);
     tx(g.n,40,y+4,13,"F2",DK);tx(Math.floor(pc)+"%",W-40,y+4,13,"F2",M,"r");
     bar(40,y+11,W-80,9,pc,M);
-    tx((g.d?g.d+"  |  ":"")+fmt(gp)+" / "+fmt(gt)+" DA",40,y+34,10,"F1",GR);
-    tx(gp>=gt&&gt?"Paid":fmt(gt-gp)+" DA left",W-40,y+34,10,"F1",GR,"r");
-    y+=46;
-    if(c.si)g.items.forEach(i=>{need(20);const ip=i.t?done(i)/i.t*100:0;
-      tx(i.n,56,y+3,10,"F1",DK);bar(250,y-4,130,6,ip,M);
-      tx(fmt(done(i))+" / "+fmt(i.t),W-40,y+3,10,"F1",GR,"r");y+=17});
+    tx((g.d?g.d+"  |  ":"")+fmt(gp)+" saved  |  "+(gp>=gt&&gt?"Paid":fmt(gt-gp)+" left"),40,y+34,10,"F1",GR);
+    tx("Total: "+fmt(gt)+" DA",W-40,y+34,11,"F2",DK,"r");
+    y+=46;{const H=sum(g.items,hs);if(H){tx(A()+": "+fmt(gt-H)+" DA   |   "+B()+": "+fmt(H)+" DA",40,y-2,10,"F2",M);y+=14}}
+    if(c.si)g.items.forEach(i=>{const sb=[i.tk,hs(i)?A()+" "+fmt(i.t-hs(i))+" / "+B()+" "+fmt(hs(i)):""].filter(Boolean).join("  |  ");need(sb?30:20);const ip=i.t?done(i)/i.t*100:0;
+      tx(i.n,56,y+3,10,"F1",DK);tx(WHO(i.w||"both"),185,y+3,9,"F2",M);bar(250,y-4,130,6,ip,M);
+      tx(fmt(done(i))+" / "+fmt(i.t),W-40,y+3,10,"F1",GR,"r");y+=17;
+      if(sb){tx(sb,56,y-3,8.5,"F1",GR);y+=11}});
     y+=10;
   });
-  if(c.sl&&state.loans.length){
-    sec("Loan repayment");
-    state.loans.forEach(l=>{
-      const b=bal(l),pc=l.amt?Math.min(100,paid(l)/l.amt*100):0,n=nextDue(l);
-      need(64);
-      tx(l.who,40,y+4,13,"F2",DK);tx(b?fmt(b)+" DA left":"Fully repaid",W-40,y+4,13,"F2",M,"r");
-      bar(40,y+11,W-80,9,pc,M);
-      tx("Repaid "+fmt(paid(l))+" of "+fmt(l.amt)+" DA  |  "+fmt(l.mo)+" DA monthly",40,y+34,10,"F1",GR);
-      if(n)tx("Next: "+fd(iso(n)),W-40,y+34,10,"F1",GR,"r");
-      y+=52;
-    });
-  }
   if(c.sh&&state.log.length){
     sec("Latest savings");
     state.log.slice(-8).reverse().forEach(d=>{need(18);tx(fd(d.date),40,y,10,"F1",GR);tx("+"+fmt(d.amt)+" DA",W-40,y,10,"F2",DK,"r");if(d.note)tx(d.note,170,y,10,"F1",GR);y+=17});
