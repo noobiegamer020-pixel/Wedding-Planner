@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Mizou - Chouchou</title>
+<title>Wedding Planner</title>
 <meta name="theme-color" content="#b4456b">
 <style>
 :root{--bg:#fbf6f4;--card:#fff;--ink:#2a1f24;--mute:#8a7a82;--line:#f1e5e8;--rose:#b4456b;--rose2:#e08aa6;--gold:#d4a23a;--plum:#6e3478;--green:#1f9d6b;--amber:#d98a1b;--red:#d6455d;--mz:#3f6fd1;--ch:#d6457a;--sh:0 1px 2px rgba(90,30,55,.06),0 10px 28px rgba(90,30,55,.08)}
@@ -83,6 +83,12 @@ details.goal>summary{display:block}details.goal>summary::after{content:"";displa
 @keyframes spt{from{opacity:0;transform:translateY(16px);filter:blur(8px)}to{opacity:1;transform:none;filter:blur(0)}}
 .spn{font:italic 20px Georgia,serif;opacity:0;letter-spacing:.04em;color:#ffd9e4;animation:spt 1.4s ease 2s forwards}
 .fh{position:absolute;bottom:-30px;left:var(--l);font-style:normal;color:rgba(255,255,255,.3);font-size:22px;animation:fy 6s linear var(--d) infinite}@keyframes fy{to{transform:translateY(-110vh) rotate(30deg);opacity:0}}
+button,summary{position:relative;overflow:hidden}
+.rp{position:absolute;border-radius:50%;background:currentColor;opacity:.24;transform:scale(0);animation:rp .6s ease-out forwards;pointer-events:none}@keyframes rp{to{transform:scale(1);opacity:0}}
+nav button.on svg{animation:pop .45s cubic-bezier(.3,1.6,.5,1)}@keyframes pop{from{transform:scale(.6)}}
+#fab{display:none;position:fixed;right:18px;bottom:calc(94px + env(safe-area-inset-bottom,0px));width:64px;height:64px;border-radius:50%;padding:0;z-index:6;place-items:center;box-shadow:0 10px 28px rgba(180,69,107,.5)}
+body[data-tab=goals] #fab{display:grid;animation:fp .45s cubic-bezier(.3,1.6,.5,1)}body[data-tab=goals] main{padding-bottom:200px}
+#fab svg{width:30px;height:30px;stroke:#fff;stroke-width:2.6;fill:none;stroke-linecap:round}@keyframes fp{from{transform:scale(.3);opacity:0}}
 .big2{font:700 32px/1.1 Georgia,serif;margin:6px 0}.big2 small{font:400 14px system-ui;color:var(--mute)}
 .due{font-size:14px;font-weight:600;margin:6px 0 10px}.due.warn{color:var(--amber)}.due.bad{color:var(--red)}.due.ok{color:var(--green)}
 .sw{display:flex;gap:10px;margin:6px 0 14px}.swb{width:40px;height:40px;border-radius:50%;padding:0;border:3px solid transparent}.swb.on{border-color:var(--ink)}
@@ -103,7 +109,7 @@ nav button.on{color:var(--rose);background:color-mix(in srgb,var(--rose) 12%,tra
 </style>
 </head>
 <body>
-<header class="top"><div class="lg" role="group" aria-label="Language"><button data-l="en">EN</button><button data-l="fr">FR</button></div><small>Our wedding</small><h1 id="ti">Mizou - Chouchou</h1><div class="hs" id="hs"></div></header>
+<header class="top"><div class="lg" role="group" aria-label="Language"><button data-l="en">EN</button><button data-l="fr">FR</button></div><small>Wedding Planner</small><h1 id="ti">Mizou - Chouchou</h1><div class="hs" id="hs"></div></header>
 <main>
 
 <div class="tab on" id="t-home">
@@ -121,7 +127,7 @@ nav button.on{color:var(--rose);background:color-mix(in srgb,var(--rose) 12%,tra
     <h2>I saved money</h2>
     <div class="row"><input class="big" id="amt" type="number" inputmode="numeric" min="1" placeholder="Amount in DA" aria-label="Amount saved in DA"><button id="add">Add</button></div>
     <div class="chips"><button data-q="10000">+10,000</button><button data-q="30000">+30,000</button><button data-q="50000">+50,000</button><button data-q="100000">+100,000</button></div>
-    <details class="pick"><summary>Choose where it goes (optional)</summary><select id="dst" aria-label="Where to put the money"></select></details>
+    <details class="pick"><summary>Choose where it goes (optional)</summary><div class="dc"><select id="dst" aria-label="Where to put the money"></select></div></details>
     <div class="err" id="err" role="alert"></div>
   </section>
   <section class="card"><h2>All goals</h2><div id="minis"></div></section>
@@ -137,6 +143,7 @@ nav button.on{color:var(--rose);background:color-mix(in srgb,var(--rose) 12%,tra
 <p class="note" id="st"></p>
 </main>
 <div id="sp" aria-hidden="true"><i class="fh" style="--l:8%;--d:0s">♥</i><i class="fh" style="--l:24%;--d:1.6s">♥</i><i class="fh" style="--l:42%;--d:.8s">♥</i><i class="fh" style="--l:60%;--d:2.4s">♥</i><i class="fh" style="--l:76%;--d:1.2s">♥</i><i class="fh" style="--l:90%;--d:3s">♥</i><div class="spi"><div class="sph">♥</div><p id="spt" lang="ar" dir="rtl"></p><div class="spn" id="spn"></div></div></div><div id="fx"></div><div id="sh" hidden></div><div id="ts" role="status"></div>
+<button id="fab" data-act="ag" aria-label="Add big goal"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
 <nav aria-label="Main">
   <button data-tab="home" class="on"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Home</button>
   <button data-tab="goals"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2"/></svg>Goals</button>
@@ -184,7 +191,7 @@ const nextDue=l=>bal(l)>0?due(l,nm(l)):null;
 const inst=l=>Math.min(l.mo,bal(l));
 const dueTxt=l=>{const n=nextDue(l);if(!n)return["Fully repaid 🎉","ok"];const k=dd(n);return[(k<0?"Overdue by "+(-k)+" day"+(k<-1?"s":""):k===0?"Due today":"Next payment in "+k+" day"+(k>1?"s":""))+" · "+fmt(inst(l))+" DA","" + (k<0?"bad":k<=3?"warn":"")]};
 
-const FR={"Our wedding":"Notre mariage","Home":"Accueil","Goals":"Objectifs","Loans":"Prêts","History":"Historique","Next to pay":"Prochain à payer","Our roles":"Nos rôles","I saved money":"J'ai économisé","Add":"Ajouter","Choose where it goes (optional)":"Choisir où va l'argent (facultatif)","Automatic: next unpaid item":"Automatique : prochain élément non payé","All goals":"Tous les objectifs","+ Add a loan":"+ Ajouter un prêt","+ Add item":"+ Ajouter un élément","+ Add big goal":"+ Ajouter un grand objectif","No entries yet.":"Aucune entrée.","Total":"Total","Edit":"Modifier","✏️ Edit":"✏️ Modifier","Deposit extra":"Verser un extra","All paid":"Tout est payé","No items":"Aucun élément","No open tasks":"Aucune tâche ouverte","Saving for this now":"En cours d'épargne","Paid":"Payé","✓ Paid":"✓ Payé","Fully repaid 🎉":"Entièrement remboursé 🎉","Cancel":"Annuler","Save":"Enregistrer","Delete":"Supprimer","Tap again to confirm":"Touchez encore pour confirmer","Pay":"Payer","left":"restant","Both":"Les deux","Progress PDF for my wife":"PDF de progression pour ma femme","Your name":"Votre nom","Her name":"Son nom","Wedding date":"Date du mariage","Message for her":"Message pour elle","Colour":"Couleur","Show items under each goal":"Afficher les éléments sous chaque objectif","Show latest savings":"Afficher les dernières économies","Create PDF and send":"Créer le PDF et l'envoyer","Backup":"Sauvegarde","Save backup":"Enregistrer la sauvegarde","Restore latest":"Restaurer la dernière","Restore from file":"Restaurer depuis un fichier","Add a payment now (DA)":"Ajouter un paiement maintenant (DA)","Task / item name":"Nom de la tâche / de l'élément","Whose task is it?":"À qui est cette tâche ?","Cost (DA)":"Coût (DA)","Paid so far (DA)":"Déjà payé (DA)","Note (optional)":"Note (facultatif)","Goal name":"Nom de l'objectif","Whose goal is it?":"À qui est cet objectif ?","Deadline (any text)":"Échéance (texte libre)","Amount (DA)":"Montant (DA)","Date":"Date","Note":"Note","Who did you borrow from?":"À qui avez-vous emprunté ?","Amount borrowed (DA)":"Montant emprunté (DA)","Monthly payment (DA)":"Paiement mensuel (DA)","Next payment date (repeats monthly on this day)":"Prochaine date de paiement (chaque mois ce jour-là)","Already repaid before (DA, optional)":"Déjà remboursé avant (DA, facultatif)","New item":"Nouvel élément","New big goal":"Nouveau grand objectif","New loan":"Nouveau prêt","Edit loan":"Modifier le prêt","Edit payment":"Modifier le paiement","Edit saving":"Modifier l'épargne","Enter a name.":"Entrez un nom.","Enter the cost.":"Entrez le coût.","Enter an amount above 0.":"Entrez un montant supérieur à 0.","Enter who you borrowed from.":"Indiquez à qui vous avez emprunté.","Enter the amount borrowed.":"Entrez le montant emprunté.","Enter the monthly payment.":"Entrez le paiement mensuel.","Pick the next payment date.":"Choisissez la prochaine date de paiement.","Add an item first (Goals tab).":"Ajoutez d'abord un élément (onglet Objectifs).","Could not save. Try again.":"Échec de l'enregistrement. Réessayez.","No loans yet. Add the money you borrowed and the app will remind you every month.":"Aucun prêt pour l'instant. Ajoutez l'argent emprunté et l'appli vous le rappellera chaque mois.","Saved on this device. Use PDF tab > Save backup before reinstalling.":"Enregistré sur cet appareil. Utilisez l'onglet PDF > Enregistrer la sauvegarde avant de réinstaller.","Saves a file on your phone (Documents/Mizou-Chouchou). After the first backup, every change is saved there automatically.":"Enregistre un fichier sur votre téléphone (Documents/Mizou-Chouchou). Après la première sauvegarde, chaque modification y est enregistrée automatiquement.","Backup saved in Documents/Mizou-Chouchou":"Sauvegarde enregistrée dans Documents/Mizou-Chouchou","Backup restored":"Sauvegarde restaurée","This is not a valid backup file.":"Ce fichier de sauvegarde n'est pas valide.","Tap Restore from file and pick your backup.":"Touchez « Restaurer depuis un fichier » et choisissez votre sauvegarde.","No backup found in Documents/Mizou-Chouchou. Tap Restore from file and pick it.":"Aucune sauvegarde trouvée dans Documents/Mizou-Chouchou. Touchez « Restaurer depuis un fichier ».","Replace everything in the app with this backup?":"Remplacer tout le contenu de l'appli par cette sauvegarde ?","Amount in DA":"Montant en DA"};
+const FR={"Our wedding":"Notre mariage","Home":"Accueil","Goals":"Objectifs","Loans":"Prêts","History":"Historique","Next to pay":"Prochain à payer","Our roles":"Nos rôles","I saved money":"J'ai économisé","Add":"Ajouter","Add big goal":"Ajouter un grand objectif","Choose where it goes (optional)":"Choisir où va l'argent (facultatif)","Automatic: next unpaid item":"Automatique : prochain élément non payé","All goals":"Tous les objectifs","+ Add a loan":"+ Ajouter un prêt","+ Add item":"+ Ajouter un élément","+ Add big goal":"+ Ajouter un grand objectif","No entries yet.":"Aucune entrée.","Total":"Total","Edit":"Modifier","✏️ Edit":"✏️ Modifier","Deposit extra":"Verser un extra","All paid":"Tout est payé","No items":"Aucun élément","No open tasks":"Aucune tâche ouverte","Saving for this now":"En cours d'épargne","Paid":"Payé","✓ Paid":"✓ Payé","Fully repaid 🎉":"Entièrement remboursé 🎉","Cancel":"Annuler","Save":"Enregistrer","Delete":"Supprimer","Tap again to confirm":"Touchez encore pour confirmer","Pay":"Payer","left":"restant","Both":"Les deux","Progress PDF for my wife":"PDF de progression pour ma femme","Your name":"Votre nom","Her name":"Son nom","Wedding date":"Date du mariage","Message for her":"Message pour elle","Colour":"Couleur","Show items under each goal":"Afficher les éléments sous chaque objectif","Show latest savings":"Afficher les dernières économies","Create PDF and send":"Créer le PDF et l'envoyer","Backup & Restore":"Sauvegarde et restauration","Backup":"Sauvegarder","Restore":"Restaurer","Restoring…":"Restauration…","Add a payment now (DA)":"Ajouter un paiement maintenant (DA)","Task / item name":"Nom de la tâche / de l'élément","Whose task is it?":"À qui est cette tâche ?","Cost (DA)":"Coût (DA)","Paid so far (DA)":"Déjà payé (DA)","Note (optional)":"Note (facultatif)","Goal name":"Nom de l'objectif","Whose goal is it?":"À qui est cet objectif ?","Deadline (any text)":"Échéance (texte libre)","Amount (DA)":"Montant (DA)","Date":"Date","Note":"Note","Who did you borrow from?":"À qui avez-vous emprunté ?","Amount borrowed (DA)":"Montant emprunté (DA)","Monthly payment (DA)":"Paiement mensuel (DA)","Next payment date (repeats monthly on this day)":"Prochaine date de paiement (chaque mois ce jour-là)","Already repaid before (DA, optional)":"Déjà remboursé avant (DA, facultatif)","New item":"Nouvel élément","New big goal":"Nouveau grand objectif","New loan":"Nouveau prêt","Edit loan":"Modifier le prêt","Edit payment":"Modifier le paiement","Edit saving":"Modifier l'épargne","Enter a name.":"Entrez un nom.","Enter the cost.":"Entrez le coût.","Enter an amount above 0.":"Entrez un montant supérieur à 0.","Enter who you borrowed from.":"Indiquez à qui vous avez emprunté.","Enter the amount borrowed.":"Entrez le montant emprunté.","Enter the monthly payment.":"Entrez le paiement mensuel.","Pick the next payment date.":"Choisissez la prochaine date de paiement.","Add an item first (Goals tab).":"Ajoutez d'abord un élément (onglet Objectifs).","Could not save. Try again.":"Échec de l'enregistrement. Réessayez.","No loans yet. Add the money you borrowed and the app will remind you every month.":"Aucun prêt pour l'instant. Ajoutez l'argent emprunté et l'appli vous le rappellera chaque mois.","Saved on this device. Use PDF tab > Save backup before reinstalling.":"Enregistré sur cet appareil. Utilisez l'onglet PDF > Enregistrer la sauvegarde avant de réinstaller.","Saves a file on your phone (Documents/Mizou-Chouchou). After the first backup, every change is saved there automatically.":"Enregistre un fichier sur votre téléphone (Documents/Mizou-Chouchou). Après la première sauvegarde, chaque modification y est enregistrée automatiquement.","Backup saved in Documents/Mizou-Chouchou":"Sauvegarde enregistrée dans Documents/Mizou-Chouchou","Backup restored":"Sauvegarde restaurée","This is not a valid backup file.":"Ce fichier de sauvegarde n'est pas valide.","Tap Restore from file and pick your backup.":"Touchez « Restaurer depuis un fichier » et choisissez votre sauvegarde.","No backup found in Documents/Mizou-Chouchou. Tap Restore from file and pick it.":"Aucune sauvegarde trouvée dans Documents/Mizou-Chouchou. Touchez « Restaurer depuis un fichier ».","Replace everything in the app with this backup?":"Remplacer tout le contenu de l'appli par cette sauvegarde ?","Amount in DA":"Montant en DA","No goals yet. Tap the + button to add one.":"Aucun objectif pour l'instant. Touchez le bouton + pour en ajouter un."};
 const FRG=[[/(\d+) days to the wedding/,"$1 jours avant le mariage"],[/Today is the wedding!/,"C'est le grand jour !"],[/Married (\d+) days ago/,"Mariés depuis $1 jours"],[/Everything is paid\. Congratulations!/,"Tout est payé. Félicitations !"],[/ DA left to save/," DA restant à épargner"],[/Loans left:/,"Prêts restants :"],[/ DA saved · (\d+)% of the plan/," DA économisés · $1 % du plan"],[/(\d%?) saved/,"$1 économisé"],[/(\d) left\b/,"$1 restant"],[/ DA left\b/," DA restant"],[/(\d) paid\b/,"$1 payé"],[/Next payment in (\d+) days?/,"Prochain paiement dans $1 j"],[/Overdue by (\d+) days?/,"En retard de $1 j"],[/Due today/,"À payer aujourd'hui"],[/^Repaid /,"Remboursé "],[/ DA monthly/," DA par mois"],[/≈ (\d+) months left/,"≈ $1 mois restants"],[/^Pay (\d.*)$/,"Payer $1"],[/^Payments \((\d+)\)$/,"Paiements ($1)"],[/ · Monthly/," · Mensuel"],[/ · Extra deposit/," · Dépôt extra"],[/^Monthly payment to /,"Paiement mensuel à "],[/^Deposit extra to /,"Verser un extra à "],[/Could not share: /,"Partage impossible : "]];
 const tr=s=>{if(lang!=="fr"||typeof s!=="string")return s;const t=s.trim();if(FR[t])return s.replace(t,FR[t]);let r=s;for(const[a,b]of FRG)r=r.replace(a,b);return r};
 const alertT=m=>window.alert(tr(m)),confirmT=m=>window.confirm(tr(m));
@@ -192,6 +199,7 @@ function i18n(){
   const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);let n;
   while(n=w.nextNode()){if(/^(SCRIPT|STYLE)$/.test(n.parentNode.nodeName)||n.parentNode.closest("#sp"))continue;
     const cur=n.nodeValue,o=(n._t!==undefined&&cur===n._t)?n._o:cur,v=tr(o);n._o=o;n._t=v;if(v!==cur)n.nodeValue=v}
+  $("fab").setAttribute("aria-label",tr("Add big goal"));
   document.querySelectorAll("[placeholder]").forEach(e=>{e._p=e._p||e.placeholder;e.placeholder=tr(e._p)});
 }
 const setLang=()=>{document.documentElement.lang=lang;document.querySelectorAll(".lg button").forEach(x=>x.classList.toggle("on",x.dataset.l===lang))};
@@ -223,15 +231,15 @@ function render(){
     const H=sum(g.items,hs),pi=(i,sh)=>{const ip=i.t?done(i)/i.t*100:0,ok=i.p>=i.t&&i.t;return `<button class="pi ${ok?"ok":""} ${i.w==="both"?"sh":""}" data-act="ei" data-g="${g.id}" data-i="${i.id}">${i.w==="both"?PAIR():""}<span class="pn1">${esc(i.n)}</span><b>${fmt(sh)} DA</b><span class="bar s"><i style="width:${ip}%"></i></span><small>${ok?"✓ Paid":Math.floor(ip)+"% saved"}${i.tk?" · "+esc(i.tk):""}</small></button>`};
     const Lq=g.items.filter(i=>i.w!=="her"),Rq=g.items.filter(i=>i.w!=="me");
     const rows=`<div class="split"><div class="col a"><h3><span>${esc(A())}</span><span>${Lq.length}</span></h3>${Lq.map(i=>pi(i,sm(i))).join("")||'<div class="em">No items</div>'}</div><div class="col b"><h3><span>${esc(B())}</span><span>${Rq.length}</span></h3>${Rq.map(i=>pi(i,hs(i))).join("")||'<div class="em">No items</div>'}</div></div>`;
-    const isOpen=first?g===state.goals[0]||g===cur:open.has(g.id);
-    return `<details class="goal" data-g="${g.id}" ${isOpen?"open":""}><summary><div class="gh"><span class="gn">${esc(g.n)}${g.o==="both"?`<span class="tg">${PAIR()}</span>`:g.o?`<span class="tg ${g.o==="her"?"b":"a"}">${esc(g.o==="her"?B():A())}</span>`:""}</span><span class="gp">${Math.floor(pc)}% <button class="g" data-act="eg" data-g="${g.id}" aria-label="Edit goal">✏️</button></span></div>
+    const isOpen=open.has(g.id);
+    return `<details class="goal" data-grp="g" data-g="${g.id}" ${isOpen?"open":""}><summary><div class="gh"><span class="gn">${esc(g.n)}${g.o==="both"?`<span class="tg">${PAIR()}</span>`:g.o?`<span class="tg ${g.o==="her"?"b":"a"}">${esc(g.o==="her"?B():A())}</span>`:""}</span><span class="gp">${Math.floor(pc)}% <button class="g" data-act="eg" data-g="${g.id}" aria-label="Edit goal">✏️</button></span></div>
     <div class="bar"><i style="width:${pc}%"></i></div>
     <div class="gm tl"><span>Total</span><span>${fmt(gt)} DA</span></div>
     <div class="gm"><span>${fmt(gp)} saved</span><span>${gp>=gt&&gt?"Paid":fmt(gt-gp)+" left"}</span></div>
     <div class="duo"><div class="a">${esc(A())}<b>${fmt(gt-sum(g.items,hs))} DA</b><small>${fmt(ps(g.items,"me"))} paid</small></div><div class="b">${esc(B())}<b>${fmt(sum(g.items,hs))} DA</b><small>${fmt(ps(g.items,"her"))} paid</small></div></div>
     <div class="gm"><span>${esc(g.d)}</span><span class="now">${cur&&cur.id===g.id?"Saving for this now":""}</span></div></summary>
     <div class="items">${rows}<button class="o" data-act="ai" data-g="${g.id}">+ Add item</button></div></details>`;
-  }).join("")+`<button class="o" data-act="ag" style="margin-top:10px">+ Add big goal</button>`;
+  }).join("")||'<div class="card sub">No goals yet. Tap the + button to add one.</div>';
   $("dst").innerHTML='<option value="auto">Automatic: next unpaid item</option>'+state.goals.map(g=>`<optgroup label="${esc(g.n)}">${g.items.map(i=>`<option value="${i.id}">${esc(i.n)} (${fmt(Math.max(0,i.t-i.p))} left)</option>`).join("")}</optgroup>`).join("");
   $("dst").value=allItems().some(i=>i.id===dst)?dst:"auto";
   $("loans").innerHTML=state.loans.map(l=>{
@@ -242,7 +250,7 @@ function render(){
     <div class="gm"><span>${fmt(l.mo)} DA monthly</span><span>${b?"≈ "+Math.ceil(b/l.mo)+" months left":""}</span></div>
     <div class="due ${cl}">${t}${n?" · "+fd(iso(n)):""}</div>
     ${b?`<div class="row"><button data-act="lp" data-l="${l.id}">Pay ${fmt(inst(l))} DA</button><button class="o" data-act="lx" data-l="${l.id}">Deposit extra</button></div>`:""}
-    <details><summary class="sub" style="text-align:left">Payments (${l.pays.length})</summary>${l.pays.slice().reverse().map(p=>`<div class="log"><div>${fmt(p.a)} DA<small>${fd(p.d)} · ${p.k==="m"?"Monthly":"Extra deposit"}${p.n?" · "+esc(p.n):""}</small></div><button class="g" data-act="ep" data-l="${l.id}" data-p="${p.id}">Edit</button></div>`).join("")}</details></div>`}).join("")||'<div class="card sub">No loans yet. Add the money you borrowed and the app will remind you every month.</div>';
+    <details data-grp="p"><summary class="sub" style="text-align:left">Payments (${l.pays.length})</summary><div class="dc">${l.pays.slice().reverse().map(p=>`<div class="log"><div>${fmt(p.a)} DA<small>${fd(p.d)} · ${p.k==="m"?"Monthly":"Extra deposit"}${p.n?" · "+esc(p.n):""}</small></div><button class="g" data-act="ep" data-l="${l.id}" data-p="${p.id}">Edit</button></div>`).join("")}</div></details></div>`}).join("")||'<div class="card sub">No loans yet. Add the money you borrowed and the app will remind you every month.</div>';
   $("log").innerHTML=state.log.map((d,k)=>`<div class="log"><div>+${fmt(d.amt)} DA<small>${fd(d.date)}${d.note?" · "+esc(d.note):""}</small></div><button class="g" data-act="elg" data-x="${k}">Edit</button></div>`).reverse().join("")||'<div class="sub">No entries yet.</div>';
   $("st").textContent="Saved on this device. Use PDF tab > Save backup before reinstalling.";
   i18n();
@@ -333,7 +341,7 @@ function paySheet(l,k,p){
 }
 
 /* events */
-document.querySelector("nav").onclick=e=>{const b=e.target.closest("[data-tab]");if(!b)return;tab=b.dataset.tab;
+document.querySelector("nav").onclick=e=>{const b=e.target.closest("[data-tab]");if(!b)return;const pv=tab;tab=b.dataset.tab;document.body.dataset.tab=tab;if(tab==="goals"&&pv!=="goals")document.querySelectorAll("details.goal[open]").forEach(d=>{if(d._a)d._a.cancel();d.open=false});
   document.querySelectorAll("nav button").forEach(x=>x.classList.toggle("on",x===b));
   document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("on",t.id==="t-"+tab));
   if(tab==="share")renderShare();render();window.scrollTo(0,0)};
@@ -381,7 +389,7 @@ function renderShare0(){
   <label class="chk"><input type="checkbox" data-c="si" ${ck("si")}> Show items under each goal</label>
   <label class="chk"><input type="checkbox" data-c="sh" ${ck("sh")}> Show latest savings</label>
   <button id="pdf" style="width:100%;margin-top:10px">Create PDF and send</button></section>
-  <section class="card"><h2>Backup</h2><div class="sub" style="text-align:left;margin-bottom:10px">Saves a file on your phone (Documents/Mizou-Chouchou). After the first backup, every change is saved there automatically.</div><div class="row"><button id="bk" style="flex:1">Save backup</button></div><div class="row"><button class="o" id="rl2">Restore latest</button><button class="o" id="rsb">Restore from file</button></div><input type="file" id="rs" accept=".json,application/json" hidden></section>`;
+  <section class="card"><h2>Backup &amp; Restore</h2><div class="row"><button id="bk">Backup</button><button class="o" id="rsb">Restore</button></div><input type="file" id="rs" accept="*/*" hidden></section>`;
 }
 $("t-share").addEventListener("input",e=>{const k=e.target.dataset.c;if(!k)return;state.cfg[k]=e.target.type==="checkbox"?e.target.checked:e.target.value;persist();render()});
 $("t-share").addEventListener("click",e=>{
@@ -389,7 +397,6 @@ $("t-share").addEventListener("click",e=>{
   if(t){state.cfg.theme=t.dataset.th;persist();renderShare();return}
   if(e.target.id==="pdf")sendFile("Wedding-Plan-"+today()+".pdf",btoa(buildPdf()),"application/pdf");
   if(e.target.id==="bk")saveBackup();
-  if(e.target.id==="rl2")restoreLatest();
   if(e.target.id==="rsb")$("rs").click();
 });
 $("t-share").addEventListener("change",e=>{
@@ -397,8 +404,8 @@ $("t-share").addEventListener("change",e=>{
   const r=new FileReader();r.onload=()=>applyBackup(r.result);r.readAsText(e.target.files[0]);e.target.value="";
 });
 function applyBackup(t){
-  try{const d=JSON.parse(t);if(!Array.isArray(d.goals))throw 0;if(!confirmT("Replace everything in the app with this backup?"))return;
-    state={goals:d.goals,log:d.log||[],loans:d.loans||[],cfg:Object.assign(CFG(),d.cfg)};fix();commit();renderShare();toast("Backup restored")}catch(x){alertT("This is not a valid backup file.")}
+  try{const d=JSON.parse(t);if(!Array.isArray(d.goals))throw 0;
+    state={goals:d.goals,log:d.log||[],loans:d.loans||[],cfg:Object.assign(CFG(),d.cfg)};fix();persist();toast("Restoring…");setTimeout(()=>location.reload(),900)}catch(x){alertT("This is not a valid backup file.")}
 }
 const FS=()=>(window.Capacitor&&Capacitor.Plugins&&Capacitor.Plugins.Filesystem)||null,BK="Mizou-Chouchou/";
 async function saveBackup(silent){
@@ -409,11 +416,6 @@ async function saveBackup(silent){
     if(!silent)await F.writeFile({path:BK+"backup-"+today()+".json",data,directory:"DOCUMENTS",recursive:true});
     localStorage.setItem("bkon","1");if(!silent)toast("Backup saved in Documents/Mizou-Chouchou");return}catch(e){}}
   if(!silent)sendFile("Mizou-Chouchou-backup-"+today()+".json",data,"application/json");
-}
-async function restoreLatest(){
-  const F=FS();if(!F){alertT("Tap Restore from file and pick your backup.");return}
-  try{const r=await F.readFile({path:BK+"backup-latest.json",directory:"DOCUMENTS",encoding:"utf8"});applyBackup(r.data)}
-  catch(e){alertT("No backup found in Documents/Mizou-Chouchou. Tap Restore from file and pick it.")}
 }
 let bt;const autoBk=()=>{if(!localStorage.getItem("bkon"))return;clearTimeout(bt);bt=setTimeout(()=>saveBackup(true),4000)};
 async function sendFile(name,b,mime){
@@ -442,7 +444,7 @@ function buildPdf(){
   const sec=t=>{need(60);y+=14;tx(t,40,y,15,"F2",M);rect(40,y+7,W-80,1.2,L);y+=28};
   np();
   rect(0,0,W,215,M);heart(W/2,52,13,WH);
-  tx(X("OUR WEDDING PLAN","NOTRE MARIAGE"),W/2,92,11,"F2",L,"c");
+  tx("WEDDING PLANNER",W/2,92,11,"F2",L,"c");
   const names=A()+" - "+B();let ns=38;while(tw(names,"F3",ns)>W-80&&ns>16)ns--;
   tx(names,W/2,138,ns,"F3",WH,"c");
   if(c.date){const k=dd(pd(c.date));tx(fd(c.date)+" - "+(k>0?k+X(" days to go"," jours restants"):k===0?X("Today is the day!","C'est le grand jour !"):X("Happily married","Heureusement mari\u00e9s")),W/2,164,13,"F1",L,"c")}
@@ -494,11 +496,32 @@ function buildPdf(){
 }
 
 try{const v=localStorage.getItem("wst2");if(v){const d=JSON.parse(v);if(d&&Array.isArray(d.goals))state={goals:d.goals,log:d.log||[],loans:d.loans||[],cfg:Object.assign(CFG(),d.cfg)}}}catch(e){}
+const RM=()=>matchMedia("(prefers-reduced-motion:reduce)").matches;
+function openD(d,on){
+  const c=d.querySelector(":scope>.items,:scope>.dc");
+  if(d._a){d._a.onfinish=null;d._a.cancel()}
+  if(!c||RM()){d.open=on;return}
+  c.style.overflow="hidden";
+  if(on){d.open=true;const h=c.offsetHeight;d._a=c.animate([{height:"0px",opacity:0},{height:h+"px",opacity:1}],{duration:340,easing:"cubic-bezier(.2,.8,.2,1)"});d._a.onfinish=()=>{c.style.overflow=""}}
+  else{const h=c.offsetHeight;d._a=c.animate([{height:h+"px",opacity:1},{height:"0px",opacity:0}],{duration:260,easing:"ease-in-out"});d._a.onfinish=()=>{d.open=false;c.style.overflow=""}}
+}
+document.addEventListener("click",e=>{
+  const sm=e.target.closest("summary");if(!sm||e.target.closest("[data-act]"))return;
+  const d=sm.parentNode;if(d.tagName!=="DETAILS")return;e.preventDefault();
+  const on=!d.open||(d._a&&d._a.playState==="running"&&d._closing);
+  if(on&&d.dataset.grp)document.querySelectorAll(`details[data-grp="${d.dataset.grp}"][open]`).forEach(x=>{if(x!==d)openD(x,false)});
+  openD(d,!d.open)
+});
+document.addEventListener("pointerdown",e=>{
+  const t=e.target.closest("button,summary");if(!t||RM())return;
+  const r=t.getBoundingClientRect(),z=Math.max(r.width,r.height)*2,p=document.createElement("span");
+  p.className="rp";p.style.cssText=`width:${z}px;height:${z}px;left:${e.clientX-r.left-z/2}px;top:${e.clientY-r.top-z/2}px`;t.appendChild(p);setTimeout(()=>p.remove(),650)
+},true);
 document.addEventListener("pointerdown",e=>{if(Math.random()<.35)love(e.clientX,e.clientY)},true);
 document.querySelector(".lg").onclick=e=>{const b=e.target.closest("[data-l]");if(!b)return;lang=b.dataset.l;try{localStorage.setItem("wl",lang)}catch(x){}setLang();render();if(tab==="share")renderShare()};
 {const AR=["حُبُّكما حكايةٌ كتبها القدرُ بأجملِ الحروف", "معًا يصيرُ البيتُ وطنًا، ويصيرُ العمرُ أجمل", "قلبانِ التقيا فصارَ الكونُ أوسعَ وأجمل", "بارَكَ اللهُ لكما، وبارَكَ عليكما، وجمعَ بينكما في خير", "الحُبُّ أن تجدَ في عينَيْ مَن تُحبُّ الوطنَ والأمان", "كلُّ خطوةٍ نحوَ الحُلمِ أجملُ حينَ تَمشيانِها معًا", "ما أجملَ أن يجمعَ اللهُ قلبَيْنِ على المحبّةِ والمودّة", "على بركةِ اللهِ يبدأُ حُلمُكما، وبالحُبِّ يكتمل", "ليكنْ بيتُكما سَكَنًا ومودّةً ورحمة", "أجملُ البيوتِ ما بُنِيَ لَبِنةً لَبِنةً بالحبِّ والصبر", "يا لَحُسنِ الدنيا حينَ يجتمعُ فيها اثنانِ على حُبٍّ وصِدق", "كلُّ يومٍ معكَ حكايةٌ جديدة، وكلُّ حكايةٍ أجملُ من أختها"],sp=$("sp");let k=Math.random()*AR.length|0;try{if(k===+localStorage.getItem("sl"))k=(k+1)%AR.length;localStorage.setItem("sl",k)}catch(e){}
 $("spt").textContent=AR[k];$("spn").textContent=A()+" ♥ "+B();sp.onclick=()=>sp.remove();setTimeout(()=>sp.remove(),5200)}
-setLang();
+document.body.dataset.tab="home";setLang();
 fix();render();sched();
 </script>
 </body>
