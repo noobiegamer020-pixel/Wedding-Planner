@@ -5,12 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Wedding Planner</title>
 <meta name="theme-color" content="#b4456b">
+<script src="firebase-config.js"></script>
 <style>
-:root{--bg:#fbf6f4;--card:#fff;--ink:#2a1f24;--mute:#8a7a82;--line:#f1e5e8;--rose:#b4456b;--rose2:#e08aa6;--gold:#d4a23a;--plum:#6e3478;--green:#1f9d6b;--amber:#d98a1b;--red:#d6455d;--mz:#3f6fd1;--ch:#d6457a;--sh:0 1px 2px rgba(90,30,55,.06),0 10px 28px rgba(90,30,55,.08)}
-@media (prefers-color-scheme:dark){:root{--bg:#161018;--card:#221a26;--ink:#f6ecef;--mute:#a999a3;--line:#352839;--rose:#e0709a;--rose2:#b4456b;--green:#3fd29a;--red:#ff7488;--mz:#7ea2f0;--ch:#f27aa8;--sh:0 1px 2px #0006,0 10px 28px #0005}}
+:root{--bg:#fbf5fb;--card:#fff;--ink:#2a1636;--mute:#8d7a99;--line:#efe3f1;--rose:#ff4f81;--peach:#ffa56b;--lil:#8e6bf2;--mint:#2fc795;--rose2:#ffa56b;--plum:#8e6bf2;--gold:#ffa56b;--green:#2fc795;--amber:#ffa53a;--red:#ff4d5a;--mz:#4f8cff;--ch:#ff4f81;--bo:#b06bf2;--sh:0 6px 18px rgba(120,60,140,.12);--ease:cubic-bezier(.2,.9,.3,1);--spring:cubic-bezier(.3,1.8,.5,1)}
+:root[data-theme=dark]{--bg:#170d20;--card:#251434;--ink:#f6e9fb;--mute:#a591b4;--line:#38214a;--sh:0 6px 18px rgba(0,0,0,.4)}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#170d20;--card:#251434;--ink:#f6e9fb;--mute:#a591b4;--line:#38214a;--sh:0 6px 18px rgba(0,0,0,.4)}}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+body{margin:0;background:var(--bg);color:var(--ink);font:600 16px/1.45 ui-rounded,"Nunito","Segoe UI",system-ui,sans-serif}
 .top{background:linear-gradient(135deg,#b4456b 0%,#8e3a74 55%,#6e3478 100%);color:#fff;padding:calc(18px + env(safe-area-inset-top,0px)) 20px 58px;position:relative;overflow:hidden}
 .top::after{content:"";position:absolute;right:-50px;top:-60px;width:190px;height:190px;border-radius:50%;border:26px solid rgba(255,255,255,.08)}
 .top::before{content:"";position:absolute;right:30px;top:20px;width:120px;height:120px;border-radius:50%;border:16px solid rgba(212,162,58,.28)}
@@ -41,7 +43,7 @@ details.pick{margin-top:10px}summary{cursor:pointer;list-style:none;color:var(--
 .mid{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
 .pct{font:700 44px/1 Georgia,serif;color:var(--rose)}
 .bar{height:8px;background:var(--line);border-radius:99px;overflow:hidden;margin:8px 0}.bar.s{height:5px;margin:6px 0}
-.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--rose2),var(--rose));border-radius:99px;transition:width .7s cubic-bezier(.2,.8,.2,1)}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--rose2),var(--rose));border-radius:99px;transition:width 1.1s var(--ease)}
 .gh{display:flex;justify-content:space-between;align-items:center;gap:8px}.gn{font-weight:700}.gp{font-weight:700;color:var(--rose);display:flex;align-items:center;gap:6px}
 .gm{display:flex;justify-content:space-between;font-size:13px;color:var(--mute);gap:8px}
 .tl{color:var(--ink);font-weight:700;font-size:15px}.now{color:var(--rose);font-weight:600}
@@ -106,16 +108,47 @@ nav button.on{color:var(--rose);background:color-mix(in srgb,var(--rose) 12%,tra
 @keyframes up{from{transform:translateY(60px);opacity:0}to{transform:none;opacity:1}}
 #ts{position:fixed;left:50%;bottom:calc(92px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:#2a1f24;color:#fff;padding:11px 18px;border-radius:99px;font-size:14px;opacity:0;pointer-events:none;transition:.3s;z-index:30;max-width:90%;text-align:center}#ts.on{opacity:1;transform:translate(-50%,0)}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}#spt,.spn{opacity:1!important}}
+/* ===== design system v2 ===== */
+html,body{height:100%;overflow:hidden}body{display:flex;flex-direction:column}
+.top{display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--rose),var(--lil));padding:calc(8px + env(safe-area-inset-top,0px)) 12px 10px;border-radius:0 0 22px 22px;flex:none;z-index:4;box-shadow:var(--sh);overflow:visible}
+.top::before,.top::after{display:none}.tt{flex:1;min-width:0}.top small{font-size:9px;line-height:1;display:block}.top h1{font-size:20px;line-height:1.15;margin:1px 0 3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rw{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+#menu{background:rgba(255,255,255,.22);width:38px;height:38px;padding:0;border-radius:13px;flex:none;position:relative}.top .hs{padding:2px 9px;font-size:11px}
+#menu::after{content:"";position:absolute;top:5px;right:5px;width:9px;height:9px;border-radius:50%;background:#7dffb8;display:none}#menu[data-st=live]::after{display:block;animation:hb 1.6s infinite}#menu[data-st=err]::after{display:block;background:#ff4d5a}
+.lg{position:static;flex:none}#menu svg{width:20px;height:20px;fill:none;stroke:#fff;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;transition:transform .6s var(--spring)}#menu.on svg{transform:rotate(90deg)}
+.pcard{background:var(--bg);border-radius:18px;padding:12px;margin-bottom:10px}.pcard .row{margin-top:8px}.pcard .err{margin-top:4px}
+.syb{background:rgba(255,255,255,.22);color:#fff;padding:5px 11px;font-size:12px;border-radius:99px}.syb.live::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:#7dffb8;margin-right:6px;animation:hb 1.6s infinite}.syb.err{background:rgba(255,77,90,.55)}
+#pages{flex:1;overflow:hidden;position:relative;min-height:0}
+#track{display:flex;height:100%;transition:transform .42s var(--ease);direction:ltr}
+.pg{min-width:100%;height:100%;overflow-y:auto;overscroll-behavior:contain;padding:14px max(16px,calc(50% - 260px)) 170px;box-sizing:border-box}
+nav{left:0;right:0;bottom:0;max-width:none;margin:0;border-radius:26px 26px 0 0;padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));background:var(--card);-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:0 -6px 24px rgba(120,60,140,.14)}
+nav button{transition:transform .4s var(--spring),color .2s}nav button.on{background:none;color:var(--rose);transform:translateY(-4px)}
+nav svg{transition:transform .4s var(--spring)}nav button.on svg{animation:none;transform:scale(1.25)}
+#fab{display:grid;right:16px;bottom:calc(84px + env(safe-area-inset-bottom,0px));width:60px;height:60px;border-radius:22px;background:linear-gradient(135deg,var(--rose),var(--lil));box-shadow:0 10px 24px color-mix(in srgb,var(--rose) 45%,transparent)}
+body[data-tab=log] #fab,body[data-tab=share] #fab{display:none}
+.pn{border-radius:30px 30px 0 0}
+.pn>.row:last-child{position:sticky;bottom:-6px;background:linear-gradient(transparent,var(--card) 28%);padding-top:16px;margin-top:0}
+.pn #ss{box-shadow:0 10px 24px color-mix(in srgb,var(--rose) 45%,transparent)}
+#ts{top:calc(12px + env(safe-area-inset-top,0px));bottom:auto;transform:translate(-50%,-170%);transition:transform .5s var(--spring),opacity .3s;box-shadow:var(--sh)}#ts.on{transform:translate(-50%,0)}
+.chips button.on{background:var(--rose);color:#fff;transform:scale(1.05);border-color:transparent}
+#dr{position:fixed;inset:0;z-index:40;pointer-events:none}#dr .bk{position:absolute;inset:0;background:#0008;opacity:0;transition:opacity .4s}
+#dr .pan{position:absolute;top:0;bottom:0;left:0;width:min(86%,340px);background:var(--card);transform:translateX(-105%);transition:transform .45s var(--ease);padding:calc(20px + env(safe-area-inset-top,0px)) 16px 20px;overflow:auto;border-radius:0 26px 26px 0}
+#dr.on{pointer-events:auto}#dr.on .bk{opacity:1}#dr.on .pan{transform:none}
+.dp{display:flex;gap:12px;align-items:center;margin-bottom:18px}.dp b{display:block;font-size:17px}.dp small{color:var(--mute)}
+.av2{width:46px;height:46px;border-radius:16px;background:linear-gradient(135deg,var(--rose),var(--lil));color:#fff;display:grid;place-items:center;font-size:20px;font-weight:800}
+.dri{display:block;width:100%;text-align:left;background:var(--bg);color:var(--ink);margin-bottom:8px;padding:14px}
+.code{font:800 28px ui-monospace,monospace;letter-spacing:.12em;text-align:center;padding:14px;border-radius:18px;background:var(--bg);margin:10px 0;user-select:all}
+.seg.two{grid-template-columns:1fr 1fr}.sh2{font-size:22px;letter-spacing:0;text-transform:none;color:var(--ink);margin:0 0 14px}.hint{font-size:13px;color:var(--mute);margin:6px 0}
+
 </style>
 </head>
 <body>
-<header class="top"><div class="lg" role="group" aria-label="Language"><button data-l="en">EN</button><button data-l="fr">FR</button></div><small>Wedding Planner</small><h1 id="ti">Mizou - Chouchou</h1><div class="hs" id="hs"></div></header>
-<main>
-
-<div class="tab on" id="t-home">
+<header class="top"><button id="menu" aria-label="Settings"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3 1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8 1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button><div class="tt"><small>Wedding Planner</small><h1 id="ti">Mizou - Chouchou</h1><div class="hs" id="hs"></div></div></header>
+<div id="pages"><div id="track">
+<section class="pg" id="t-home">
   <section class="card ringwrap" aria-label="Overall progress">
     <div class="ring">
-      <svg viewBox="0 0 120 120" aria-hidden="true"><defs><linearGradient id="gr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d4a23a"/><stop offset="1" stop-color="#b4456b"/></linearGradient></defs><circle class="t" cx="60" cy="60" r="52" fill="none" stroke-width="11"/><circle class="f" id="rf" cx="60" cy="60" r="52" fill="none" stroke-width="11" stroke-linecap="round" stroke-dasharray="326.7" stroke-dashoffset="326.7"/></svg>
+      <svg viewBox="0 0 120 120" aria-hidden="true"><defs><linearGradient id="gr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffa56b"/><stop offset="1" style="stop-color:var(--rose)"/></linearGradient></defs><circle class="t" cx="60" cy="60" r="52" fill="none" stroke-width="11"/><circle class="f" id="rf" cx="60" cy="60" r="52" fill="none" stroke-width="11" stroke-linecap="round" stroke-dasharray="326.7" stroke-dashoffset="326.7"/></svg>
       <div class="mid"><div class="pct" id="pct">0%</div><div class="sub" id="tot"></div></div>
     </div>
     <div class="sub" id="left" style="margin-top:12px"></div>
@@ -131,18 +164,15 @@ nav button.on{color:var(--rose);background:color-mix(in srgb,var(--rose) 12%,tra
     <div class="err" id="err" role="alert"></div>
   </section>
   <section class="card"><h2>All goals</h2><div id="minis"></div></section>
-</div>
-
-<div class="tab" id="t-goals"><div id="goals"></div></div>
-
-<div class="tab" id="t-loans"><div id="loans"></div><button class="o" data-act="al" style="width:100%">+ Add a loan</button></div>
-
-<div class="tab" id="t-log"><section class="card"><h2>History</h2><div id="log"></div></section></div>
-
-<div class="tab" id="t-share"></div>
-<p class="note" id="st"></p>
-</main>
+  <p class="note" id="st"></p>
+</section>
+<section class="pg" id="t-goals"><div id="goals"></div></section>
+<section class="pg" id="t-loans"><div id="loans"></div></section>
+<section class="pg" id="t-log"><section class="card"><h2>History</h2><div id="log"></div></section></section>
+<section class="pg" id="t-share"></section>
+</div></div>
 <div id="sp" aria-hidden="true"><i class="fh" style="--l:8%;--d:0s">♥</i><i class="fh" style="--l:24%;--d:1.6s">♥</i><i class="fh" style="--l:42%;--d:.8s">♥</i><i class="fh" style="--l:60%;--d:2.4s">♥</i><i class="fh" style="--l:76%;--d:1.2s">♥</i><i class="fh" style="--l:90%;--d:3s">♥</i><div class="spi"><div class="sph">♥</div><p id="spt" lang="ar" dir="rtl"></p><div class="spn" id="spn"></div></div></div><div id="fx"></div><div id="sh" hidden></div><div id="ts" role="status"></div>
+<div id="dr"><div class="bk"></div><aside class="pan" id="drp"></aside></div><input type="file" id="rs0" accept="*/*" hidden>
 <button id="fab" data-act="ag" aria-label="Add big goal"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
 <nav aria-label="Main">
   <button data-tab="home" class="on"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Home</button>
@@ -155,7 +185,8 @@ nav button.on{color:var(--rose);background:color-mix(in srgb,var(--rose) 12%,tra
 <script>
 let lang=(()=>{try{return localStorage.getItem("wl")==="fr"?"fr":"en"}catch(e){return"en"}})();
 const uid=()=>Math.random().toString(36).slice(2,8);
-const I=(n,t,p)=>({id:uid(),n,t,p:p||0});
+let CN=Date.now();const nc=()=>++CN;
+const I=(n,t,p)=>({id:uid(),c:nc(),n,t,p:p||0});
 const CFG=()=>({a:"Mizou",b:"Chouchou",date:"",theme:"rose",msg:"",si:true,sl:true,sh:true});
 const DEFAULT=()=>({goals:[
  {id:uid(),n:"Wife's items",d:"by Dec 31, 2026",items:[I("Khatem",100000,30000),I("Sensla",170000,50000),I("Kftan",30000),I("Cosmetics",20000),I("Bag + sandals",10000)]},
@@ -183,7 +214,7 @@ const done=i=>Math.min(i.p,i.t);
 const sum=(arr,f)=>arr.reduce((a,x)=>a+f(x),0);
 const A=()=>state.cfg.a||"Mizou",B=()=>state.cfg.b||"Chouchou";
 const toast=m=>{const t=$("ts");t.textContent=tr(m);t.classList.add("on");clearTimeout(toast.k);toast.k=setTimeout(()=>t.classList.remove("on"),2600)};
-const hs=i=>i.w==="her"?i.t:i.w==="both"?Math.round(i.t/2):0,sm=i=>i.t-hs(i),own=i=>i.w==="her"?"her":"me",has=(i,w)=>i.w==="both"||own(i)===w,ps=(a,w)=>sum(a,i=>i.w==="both"?done(i)/2:own(i)===w?done(i):0),fix=()=>state.goals.forEach(g=>g.items.forEach(i=>{if(!["me","her","both"].includes(i.w))i.w=g.o||"me";delete i.hs})),PAIR=()=>`<span class="pair" aria-hidden="true"><i>${esc((A()[0]||"M").toUpperCase())}</i><b>♥</b><i>${esc((B()[0]||"C").toUpperCase())}</i></span>`,WHO=w=>w==="me"?A():w==="her"?B():"Both";
+const hs=i=>i.w==="her"?i.t:i.w==="both"?Math.round(i.t/2):0,sm=i=>i.t-hs(i),own=i=>i.w==="her"?"her":"me",has=(i,w)=>i.w==="both"||own(i)===w,ps=(a,w)=>sum(a,i=>i.w==="both"?done(i)/2:own(i)===w?done(i):0),fix=()=>{state.goals.forEach(g=>{g.c??=nc();g.items.forEach(i=>{i.c??=nc();if(!["me","her","both"].includes(i.w))i.w=g.o||"me";delete i.hs})});state.log.forEach(l=>{l.id??=uid();l.c??=nc()});state.loans.forEach(l=>{l.c??=nc()})},PAIR=()=>`<span class="pair" aria-hidden="true"><i>${esc((A()[0]||"M").toUpperCase())}</i><b>♥</b><i>${esc((B()[0]||"C").toUpperCase())}</i></span>`,WHO=w=>w==="me"?A():w==="her"?B():"Both";
 /* loans */
 const paid=l=>sum(l.pays,p=>p.a),bal=l=>Math.max(0,l.amt-paid(l)),nm=l=>l.pays.filter(p=>p.k==="m").length;
 const due=(l,n)=>{const[y,m,d]=l.fd.split("-").map(Number);const x=new Date(y,m-1+n,1);x.setDate(Math.min(d,new Date(y,m+n,0).getDate()));return x};
@@ -191,7 +222,7 @@ const nextDue=l=>bal(l)>0?due(l,nm(l)):null;
 const inst=l=>Math.min(l.mo,bal(l));
 const dueTxt=l=>{const n=nextDue(l);if(!n)return["Fully repaid 🎉","ok"];const k=dd(n);return[(k<0?"Overdue by "+(-k)+" day"+(k<-1?"s":""):k===0?"Due today":"Next payment in "+k+" day"+(k>1?"s":""))+" · "+fmt(inst(l))+" DA","" + (k<0?"bad":k<=3?"warn":"")]};
 
-const FR={"Our wedding":"Notre mariage","Home":"Accueil","Goals":"Objectifs","Loans":"Prêts","History":"Historique","Next to pay":"Prochain à payer","Our roles":"Nos rôles","I saved money":"J'ai économisé","Add":"Ajouter","Add big goal":"Ajouter un grand objectif","Choose where it goes (optional)":"Choisir où va l'argent (facultatif)","Automatic: next unpaid item":"Automatique : prochain élément non payé","All goals":"Tous les objectifs","+ Add a loan":"+ Ajouter un prêt","+ Add item":"+ Ajouter un élément","+ Add big goal":"+ Ajouter un grand objectif","No entries yet.":"Aucune entrée.","Total":"Total","Edit":"Modifier","✏️ Edit":"✏️ Modifier","Deposit extra":"Verser un extra","All paid":"Tout est payé","No items":"Aucun élément","No open tasks":"Aucune tâche ouverte","Saving for this now":"En cours d'épargne","Paid":"Payé","✓ Paid":"✓ Payé","Fully repaid 🎉":"Entièrement remboursé 🎉","Cancel":"Annuler","Save":"Enregistrer","Delete":"Supprimer","Tap again to confirm":"Touchez encore pour confirmer","Pay":"Payer","left":"restant","Both":"Les deux","Progress PDF for my wife":"PDF de progression pour ma femme","Your name":"Votre nom","Her name":"Son nom","Wedding date":"Date du mariage","Message for her":"Message pour elle","Colour":"Couleur","Show items under each goal":"Afficher les éléments sous chaque objectif","Show latest savings":"Afficher les dernières économies","Create PDF and send":"Créer le PDF et l'envoyer","Backup & Restore":"Sauvegarde et restauration","Backup":"Sauvegarder","Restore":"Restaurer","Restoring…":"Restauration…","Add a payment now (DA)":"Ajouter un paiement maintenant (DA)","Task / item name":"Nom de la tâche / de l'élément","Whose task is it?":"À qui est cette tâche ?","Cost (DA)":"Coût (DA)","Paid so far (DA)":"Déjà payé (DA)","Note (optional)":"Note (facultatif)","Goal name":"Nom de l'objectif","Whose goal is it?":"À qui est cet objectif ?","Deadline (any text)":"Échéance (texte libre)","Amount (DA)":"Montant (DA)","Date":"Date","Note":"Note","Who did you borrow from?":"À qui avez-vous emprunté ?","Amount borrowed (DA)":"Montant emprunté (DA)","Monthly payment (DA)":"Paiement mensuel (DA)","Next payment date (repeats monthly on this day)":"Prochaine date de paiement (chaque mois ce jour-là)","Already repaid before (DA, optional)":"Déjà remboursé avant (DA, facultatif)","New item":"Nouvel élément","New big goal":"Nouveau grand objectif","New loan":"Nouveau prêt","Edit loan":"Modifier le prêt","Edit payment":"Modifier le paiement","Edit saving":"Modifier l'épargne","Enter a name.":"Entrez un nom.","Enter the cost.":"Entrez le coût.","Enter an amount above 0.":"Entrez un montant supérieur à 0.","Enter who you borrowed from.":"Indiquez à qui vous avez emprunté.","Enter the amount borrowed.":"Entrez le montant emprunté.","Enter the monthly payment.":"Entrez le paiement mensuel.","Pick the next payment date.":"Choisissez la prochaine date de paiement.","Add an item first (Goals tab).":"Ajoutez d'abord un élément (onglet Objectifs).","Could not save. Try again.":"Échec de l'enregistrement. Réessayez.","No loans yet. Add the money you borrowed and the app will remind you every month.":"Aucun prêt pour l'instant. Ajoutez l'argent emprunté et l'appli vous le rappellera chaque mois.","Saved on this device. Use PDF tab > Save backup before reinstalling.":"Enregistré sur cet appareil. Utilisez l'onglet PDF > Enregistrer la sauvegarde avant de réinstaller.","Saves a file on your phone (Documents/Mizou-Chouchou). After the first backup, every change is saved there automatically.":"Enregistre un fichier sur votre téléphone (Documents/Mizou-Chouchou). Après la première sauvegarde, chaque modification y est enregistrée automatiquement.","Backup saved in Documents/Mizou-Chouchou":"Sauvegarde enregistrée dans Documents/Mizou-Chouchou","Backup restored":"Sauvegarde restaurée","This is not a valid backup file.":"Ce fichier de sauvegarde n'est pas valide.","Tap Restore from file and pick your backup.":"Touchez « Restaurer depuis un fichier » et choisissez votre sauvegarde.","No backup found in Documents/Mizou-Chouchou. Tap Restore from file and pick it.":"Aucune sauvegarde trouvée dans Documents/Mizou-Chouchou. Touchez « Restaurer depuis un fichier ».","Replace everything in the app with this backup?":"Remplacer tout le contenu de l'appli par cette sauvegarde ?","Amount in DA":"Montant en DA","No goals yet. Tap the + button to add one.":"Aucun objectif pour l'instant. Touchez le bouton + pour en ajouter un."};
+const FR={"Our wedding":"Notre mariage","Home":"Accueil","Goals":"Objectifs","Loans":"Prêts","History":"Historique","Next to pay":"Prochain à payer","Our roles":"Nos rôles","I saved money":"J'ai économisé","Add":"Ajouter","Add big goal":"Ajouter un grand objectif","Settings":"Réglages","Pair with partner":"Lier avec le partenaire","Theme":"Thème","Data":"Données","Live sync needs your Firebase project. Fill in firebase-config.js, build the app again, and you can create a couple code here.":"La synchronisation en direct nécessite votre projet Firebase.","added":"a ajouté","new goal":"nouvel objectif","saved":"économisés","new things added":"nouveautés ajoutées","items":"éléments","You are":"Vous êtes","Share this code with your partner so they can join.":"Partagez ce code avec votre partenaire pour qu'il/elle vous rejoigne.","Share code":"Partager le code","Disconnect":"Déconnecter","Disconnected":"Déconnecté","Connected ♥":"Connecté ♥","Create couple code":"Créer le code du couple","or join your partner":"ou rejoignez votre partenaire","Couple code":"Code du couple","Join":"Rejoindre","I am":"Je suis","Welcome ♥":"Bienvenue ♥","Who is holding this phone?":"Qui tient ce téléphone ?","Next":"Suivant","Your look":"Votre style","Connect with your love":"Connectez-vous avec votre amour","Create a couple code, or join with your partner's code, so new items appear on both phones live.":"Créez un code de couple ou rejoignez celui de votre partenaire pour voir les nouveaux éléments en direct sur les deux téléphones.","Pair now":"Lier maintenant","Later":"Plus tard","🔗 Pair":"🔗 Lier","Live":"En direct","Offline":"Hors ligne","Close":"Fermer","Copied":"Copié","Firebase is not set up yet.":"Firebase n'est pas encore configuré.","Enter the couple code.":"Entrez le code du couple.","Code not found. Check it and try again.":"Code introuvable. Vérifiez et réessayez.","Could not create the code. Check your internet.":"Impossible de créer le code. Vérifiez votre connexion.","Could not join. Check your internet.":"Impossible de rejoindre. Vérifiez votre connexion.","Joining replaces this phone's data with your partner's. Continue?":"Rejoindre remplace les données de ce téléphone par celles de votre partenaire. Continuer ?","Add a loan":"Ajouter un prêt","Add savings":"Ajouter une épargne","Pair & live sync":"Lier et synchroniser en direct","Appearance":"Apparence","Language":"Langue","Together":"Ensemble","Auto":"Auto","Light":"Clair","Dark":"Sombre","Press back again to exit":"Appuyez encore sur retour pour quitter","📂 Restore":"📂 Restaurer","💾 Backup":"💾 Sauvegarder","📄 Send PDF":"📄 Envoyer le PDF","🔗 Pair & live sync":"🔗 Lier et synchroniser","Choose where it goes (optional)":"Choisir où va l'argent (facultatif)","Automatic: next unpaid item":"Automatique : prochain élément non payé","All goals":"Tous les objectifs","+ Add a loan":"+ Ajouter un prêt","+ Add item":"+ Ajouter un élément","+ Add big goal":"+ Ajouter un grand objectif","No entries yet.":"Aucune entrée.","Total":"Total","Edit":"Modifier","✏️ Edit":"✏️ Modifier","Deposit extra":"Verser un extra","All paid":"Tout est payé","No items":"Aucun élément","No open tasks":"Aucune tâche ouverte","Saving for this now":"En cours d'épargne","Paid":"Payé","✓ Paid":"✓ Payé","Fully repaid 🎉":"Entièrement remboursé 🎉","Cancel":"Annuler","Save":"Enregistrer","Delete":"Supprimer","Tap again to confirm":"Touchez encore pour confirmer","Pay":"Payer","left":"restant","Both":"Les deux","Progress PDF for my wife":"PDF de progression pour ma femme","Your name":"Votre nom","Her name":"Son nom","Wedding date":"Date du mariage","Message for her":"Message pour elle","Colour":"Couleur","Show items under each goal":"Afficher les éléments sous chaque objectif","Show latest savings":"Afficher les dernières économies","Create PDF and send":"Créer le PDF et l'envoyer","Backup & Restore":"Sauvegarde et restauration","Backup":"Sauvegarder","Restore":"Restaurer","Restoring…":"Restauration…","Add a payment now (DA)":"Ajouter un paiement maintenant (DA)","Task / item name":"Nom de la tâche / de l'élément","Whose task is it?":"À qui est cette tâche ?","Cost (DA)":"Coût (DA)","Paid so far (DA)":"Déjà payé (DA)","Note (optional)":"Note (facultatif)","Goal name":"Nom de l'objectif","Whose goal is it?":"À qui est cet objectif ?","Deadline (any text)":"Échéance (texte libre)","Amount (DA)":"Montant (DA)","Date":"Date","Note":"Note","Who did you borrow from?":"À qui avez-vous emprunté ?","Amount borrowed (DA)":"Montant emprunté (DA)","Monthly payment (DA)":"Paiement mensuel (DA)","Next payment date (repeats monthly on this day)":"Prochaine date de paiement (chaque mois ce jour-là)","Already repaid before (DA, optional)":"Déjà remboursé avant (DA, facultatif)","New item":"Nouvel élément","New big goal":"Nouveau grand objectif","New loan":"Nouveau prêt","Edit loan":"Modifier le prêt","Edit payment":"Modifier le paiement","Edit saving":"Modifier l'épargne","Enter a name.":"Entrez un nom.","Enter the cost.":"Entrez le coût.","Enter an amount above 0.":"Entrez un montant supérieur à 0.","Enter who you borrowed from.":"Indiquez à qui vous avez emprunté.","Enter the amount borrowed.":"Entrez le montant emprunté.","Enter the monthly payment.":"Entrez le paiement mensuel.","Pick the next payment date.":"Choisissez la prochaine date de paiement.","Add an item first (Goals tab).":"Ajoutez d'abord un élément (onglet Objectifs).","Could not save. Try again.":"Échec de l'enregistrement. Réessayez.","No loans yet. Add the money you borrowed and the app will remind you every month.":"Aucun prêt pour l'instant. Ajoutez l'argent emprunté et l'appli vous le rappellera chaque mois.","Saved on this device. Use PDF tab > Save backup before reinstalling.":"Enregistré sur cet appareil. Utilisez l'onglet PDF > Enregistrer la sauvegarde avant de réinstaller.","Saves a file on your phone (Documents/Mizou-Chouchou). After the first backup, every change is saved there automatically.":"Enregistre un fichier sur votre téléphone (Documents/Mizou-Chouchou). Après la première sauvegarde, chaque modification y est enregistrée automatiquement.","Backup saved in Documents/Mizou-Chouchou":"Sauvegarde enregistrée dans Documents/Mizou-Chouchou","Backup restored":"Sauvegarde restaurée","This is not a valid backup file.":"Ce fichier de sauvegarde n'est pas valide.","Tap Restore from file and pick your backup.":"Touchez « Restaurer depuis un fichier » et choisissez votre sauvegarde.","No backup found in Documents/Mizou-Chouchou. Tap Restore from file and pick it.":"Aucune sauvegarde trouvée dans Documents/Mizou-Chouchou. Touchez « Restaurer depuis un fichier ».","Replace everything in the app with this backup?":"Remplacer tout le contenu de l'appli par cette sauvegarde ?","Amount in DA":"Montant en DA","No goals yet. Tap the + button to add one.":"Aucun objectif pour l'instant. Touchez le bouton + pour en ajouter un."};
 const FRG=[[/(\d+) days to the wedding/,"$1 jours avant le mariage"],[/Today is the wedding!/,"C'est le grand jour !"],[/Married (\d+) days ago/,"Mariés depuis $1 jours"],[/Everything is paid\. Congratulations!/,"Tout est payé. Félicitations !"],[/ DA left to save/," DA restant à épargner"],[/Loans left:/,"Prêts restants :"],[/ DA saved · (\d+)% of the plan/," DA économisés · $1 % du plan"],[/(\d%?) saved/,"$1 économisé"],[/(\d) left\b/,"$1 restant"],[/ DA left\b/," DA restant"],[/(\d) paid\b/,"$1 payé"],[/Next payment in (\d+) days?/,"Prochain paiement dans $1 j"],[/Overdue by (\d+) days?/,"En retard de $1 j"],[/Due today/,"À payer aujourd'hui"],[/^Repaid /,"Remboursé "],[/ DA monthly/," DA par mois"],[/≈ (\d+) months left/,"≈ $1 mois restants"],[/^Pay (\d.*)$/,"Payer $1"],[/^Payments \((\d+)\)$/,"Paiements ($1)"],[/ · Monthly/," · Mensuel"],[/ · Extra deposit/," · Dépôt extra"],[/^Monthly payment to /,"Paiement mensuel à "],[/^Deposit extra to /,"Verser un extra à "],[/Could not share: /,"Partage impossible : "]];
 const tr=s=>{if(lang!=="fr"||typeof s!=="string")return s;const t=s.trim();if(FR[t])return s.replace(t,FR[t]);let r=s;for(const[a,b]of FRG)r=r.replace(a,b);return r};
 const alertT=m=>window.alert(tr(m)),confirmT=m=>window.confirm(tr(m));
@@ -199,13 +230,137 @@ function i18n(){
   const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);let n;
   while(n=w.nextNode()){if(/^(SCRIPT|STYLE)$/.test(n.parentNode.nodeName)||n.parentNode.closest("#sp"))continue;
     const cur=n.nodeValue,o=(n._t!==undefined&&cur===n._t)?n._o:cur,v=tr(o);n._o=o;n._t=v;if(v!==cur)n.nodeValue=v}
-  $("fab").setAttribute("aria-label",tr("Add big goal"));
+  $("fab").setAttribute("aria-label",tr({home:"Add savings",goals:"Add big goal",loans:"Add a loan"}[tab]||"Add"));
   document.querySelectorAll("[placeholder]").forEach(e=>{e._p=e._p||e.placeholder;e.placeholder=tr(e._p)});
 }
 const setLang=()=>{document.documentElement.lang=lang;document.querySelectorAll(".lg button").forEach(x=>x.classList.toggle("on",x.dataset.l===lang))};
 const LV=["❤️","💕","💖","💗","💞","😍","🥰","💘"];
 function love(x,y,n){if(matchMedia("(prefers-reduced-motion:reduce)").matches)return;for(let k=0;k<(n||1);k++){const e=document.createElement("span");e.className="lv";e.textContent=LV[Math.random()*LV.length|0];e.style.cssText=`left:${x+(Math.random()*60-30)}px;top:${y+(n>1?Math.random()*80-40:0)}px;--dx:${Math.random()*70-35}px;--r:${Math.random()*50-25}deg;font-size:${16+Math.random()*16}px;animation-delay:${n>1?k*60:0}ms`;$("fx").appendChild(e);e.onanimationend=()=>e.remove()}}
 const burst=()=>love(innerWidth/2,innerHeight/2,14);
+
+/* ===== Firebase pair sync ===== */
+let SY={};try{SY=JSON.parse(localStorage.getItem("wsy")||"{}")}catch(e){}
+SY.ts=SY.ts||{};SY.sent=SY.sent||{};SY.seen=SY.seen||0;SY.lu=SY.lu||0;
+const saveSY=()=>{try{localStorage.setItem("wsy",JSON.stringify(SY))}catch(e){}};
+const H=t=>{let a=0xdeadbeef,b=0x41c6ce57;for(let i=0;i<t.length;i++){const c=t.charCodeAt(i);a=Math.imul(a^c,2654435761);b=Math.imul(b^c,1597334677)}a=Math.imul(a^a>>>16,2246822507)^Math.imul(b^b>>>13,3266489909);b=Math.imul(b^b>>>16,2246822507)^Math.imul(a^a>>>13,3266489909);return 4294967296*(2097151&b)+(a>>>0)};
+let FB=null,REF=null,UNSUB=null,STAT="off",pt=0,NID=5000;
+const cfgOK=()=>{const c=window.FIREBASE_CONFIG;return!!(c&&c.apiKey&&!/^PASTE/.test(c.apiKey))};
+async function fbInit(){
+  if(FB!==null)return FB;
+  if(!cfgOK())return FB=false;
+  const ld=src=>new Promise((ok,no)=>{const e=document.createElement("script");e.src=src;e.onload=ok;e.onerror=no;document.head.appendChild(e)});
+  if(!window.firebase)for(const b of["","https://www.gstatic.com/firebasejs/10.14.1/"]){try{await ld(b+"firebase-app-compat.js");await ld(b+"firebase-firestore-compat.js");break}catch(e){}}
+  if(!window.firebase)return FB=false;
+  try{firebase.initializeApp(window.FIREBASE_CONFIG);const f=firebase.firestore();try{await f.enablePersistence({synchronizeTabs:true})}catch(e){}FB=f}catch(e){FB=false}
+  return FB;
+}
+function flat(){
+  fix();const m={};
+  state.goals.forEach(g=>{const{items,...gm}=g;m["g_"+g.id]=JSON.stringify(gm);items.forEach(i=>{m["i_"+i.id]=JSON.stringify({...i,g:g.id})})});
+  state.log.forEach(l=>m["l_"+l.id]=JSON.stringify(l));state.loans.forEach(l=>m["n_"+l.id]=JSON.stringify(l));
+  const c=state.cfg;m.c_cfg=JSON.stringify({a:c.a,b:c.b,date:c.date,msg:c.msg,theme:c.theme,si:c.si,sh:c.sh});return m;
+}
+function unflat(m){
+  const gs={},its=[],lg=[],ln=[];let cf={};
+  for(const[k,v]of Object.entries(m)){let o;try{o=JSON.parse(v)}catch(e){continue}
+    if(k.startsWith("g_"))gs[o.id]={...o,items:[]};else if(k.startsWith("i_"))its.push(o);else if(k.startsWith("l_"))lg.push(o);else if(k.startsWith("n_"))ln.push(o);else if(k==="c_cfg")cf=o}
+  const by=(a,b)=>(a.c||0)-(b.c||0);
+  its.sort(by).forEach(i=>{const g=gs[i.g];if(g){delete i.g;g.items.push(i)}});
+  return{goals:Object.values(gs).sort(by),log:lg.sort(by),loans:ln.sort(by),cfg:Object.assign(CFG(),state.cfg,cf)};
+}
+function setSt(x){const ch=STAT!==x;STAT=x;$("menu").dataset.st=SY.code?(x==="err"?"err":"live"):"";if(ch&&SY.code&&$("dr").classList.contains("on"))drawer()}
+function pushSoon(){if(!SY.code)return;clearTimeout(pt);pt=setTimeout(push,500)}
+async function push(){
+  if(!SY.code||!REF)return;
+  const cur=flat(),up={},old={};let u=Math.max(Date.now(),SY.lu+1);
+  for(const k in cur)if(H(cur[k])!==SY.sent[k]){up[k]={d:cur[k],u:u++,by:SY.role};old[k]=SY.sent[k]}
+  for(const k in SY.sent)if(!(k in cur)){up[k]={del:1,u:u++,by:SY.role};old[k]=SY.sent[k]}
+  if(!Object.keys(up).length)return;
+  SY.lu=u;
+  for(const k in up){SY.ts[k]=up[k].u;if(up[k].del)delete SY.sent[k];else SY.sent[k]=H(cur[k])}
+  saveSY();
+  try{await REF.set(up,{merge:true});setSt("live")}
+  catch(e){for(const k in old){if(old[k]===undefined)delete SY.sent[k];else SY.sent[k]=old[k]}saveSY();setSt("err")}
+}
+function applyRemote(data){
+  const cur=flat(),fresh=[];let ch=0,seen=SY.seen;
+  for(const[k,f]of Object.entries(data)){
+    if(!f||typeof f!=="object"||!f.u)continue;seen=Math.max(seen,f.u);
+    if(f.u<=(SY.ts[k]||0))continue;
+    SY.ts[k]=f.u;
+    if(f.del){if(k in cur){delete cur[k];ch=1}delete SY.sent[k];continue}
+    if(f.d===cur[k]){SY.sent[k]=H(f.d);continue}
+    const isNew=!(k in cur);cur[k]=f.d;SY.sent[k]=H(f.d);ch=1;
+    if(isNew&&f.by&&f.by!==SY.role&&f.u>SY.seen)fresh.push([k,f.d]);
+  }
+  if(ch){state=unflat(cur);fix();try{store()}catch(e){}render()}
+  SY.seen=seen;saveSY();
+  if(fresh.length)notifyNew(fresh);
+}
+function notifyNew(list){
+  const who=SY.role==="me"?B():A(),pick=list.filter(([k])=>/^[gil]_/.test(k)),it=pick.filter(([k])=>k[0]==="i");
+  if(!pick.length)return;
+  let body,t="♥ "+who;
+  if(pick.length===1){const o=JSON.parse(pick[0][1]),k=pick[0][0][0];
+    body=k==="i"?`${tr("added")} “${o.n}” · ${fmt(o.t)} DA`:k==="g"?`${tr("new goal")}: ${o.n}`:`+${fmt(o.amt)} DA ${tr("saved")}`}
+  else body=`${pick.length} ${tr("new things added")}`+(it.length?` (${it.length} ${tr("items")})`:"");
+  toast(who+" "+(pick.length===1?body:body));burst();
+  const N=window.Capacitor&&Capacitor.Plugins&&Capacitor.Plugins.LocalNotifications;
+  if(N&&document.visibilityState==="hidden")N.schedule({notifications:[{id:NID++,title:t,body,schedule:{at:new Date(Date.now()+400)}}]}).catch(()=>{});
+}
+async function startSync(){
+  if(!SY.code)return setSt("off");
+  const f=await fbInit();if(!f){setSt("err");return}
+  REF=f.collection("couples").doc(SY.code);if(UNSUB)UNSUB();
+  UNSUB=REF.onSnapshot(snap=>{if(snap.metadata&&snap.metadata.hasPendingWrites)return;if(snap.exists)applyRemote(snap.data());setSt("live");pushSoon()},()=>setSt("err"));
+  setSt("live");
+}
+const genCode=()=>"WP-"+Array.from({length:6},()=>"ABCDEFGHJKMNPQRSTUVWXYZ23456789"[Math.random()*31|0]).join("");
+async function pairCreate(role){
+  const f=await fbInit();if(!f)return"Firebase is not set up yet.";
+  try{const code=genCode(),ref=f.collection("couples").doc(code),cur=flat(),u=Date.now(),up={m:{r:role,t:u}};
+    for(const k in cur)up[k]={d:cur[k],u:u,by:role};
+    await ref.set(up);
+    SY={code,role,ts:{},sent:{},seen:u,lu:u};for(const k in cur){SY.ts[k]=u;SY.sent[k]=H(cur[k])}
+    UI.role=role;saveUI();saveSY();await startSync();return"";
+  }catch(e){return"Could not create the code. Check your internet."}
+}
+async function pairJoin(code){
+  const f=await fbInit();if(!f)return"Firebase is not set up yet.";
+  code=code.trim().toUpperCase();if(!code)return"Enter the couple code.";
+  try{const ref=f.collection("couples").doc(code),snap=await ref.get();
+    if(!snap.exists)return"Code not found. Check it and try again.";
+    const d=snap.data(),role=(d.m&&d.m.r==="me")?"her":"me",cur={};let seen=0;
+    SY={code,role,ts:{},sent:{},seen:0,lu:0};
+    for(const[k,v]of Object.entries(d)){if(!v||!v.u)continue;seen=Math.max(seen,v.u);SY.ts[k]=v.u;if(!v.del){cur[k]=v.d;SY.sent[k]=H(v.d)}}
+    SY.seen=seen;state=unflat(cur);fix();store();UI.role=role;saveUI();saveSY();render();await startSync();return"";
+  }catch(e){return"Could not join. Check your internet."}
+}
+function pairOff(){if(UNSUB)UNSUB();UNSUB=null;REF=null;SY={ts:{},sent:{},seen:0,lu:0};saveSY();setSt("off")}
+function openSheet(h){const s=$("sh");s.innerHTML=`<div class="pn" role="dialog">${h}</div>`;s.hidden=false;s.onclick=e=>{if(e.target===s)closeSheet();segH(e)};i18n()}
+function pairBlock(){
+  if(!cfgOK())return`<p class="hint">Live sync needs your Firebase project. Fill in <b>firebase-config.js</b>, build the app again, and you can create a couple code here.</p>`;
+  if(SY.code)return`<div class="code cd">${esc(SY.code)}</div><p class="hint"><b>● ${tr(STAT==="err"?"Offline":"Live")}</b> · ${tr("You are")} <b>${esc(roleName())}</b>. ${tr("Share this code with your partner so they can join.")}</p><div class="row"><button class="o pcp">Share code</button><button class="d poff">Disconnect</button></div>`;
+  return`<div class="fl"><span>I am</span><div class="seg two pr" data-sg="${UI.role||"me"}"><button type="button" class="${UI.role==="her"?"":"on"}" data-sv="me">${esc(A())}</button><button type="button" class="${UI.role==="her"?"on":""}" data-sv="her">${esc(B())}</button></div></div><div class="row"><button class="pn1">Create couple code</button></div><p class="hint">or join your partner</p><label>Couple code<input class="pj" placeholder="WP-XXXXXX" autocapitalize="characters"></label><div class="err pe"></div><div class="row"><button class="o pj1">Join</button></div>`;
+}
+function pairWire(root,after){
+  const q=c=>root.querySelector("."+c),run=async fn=>{const e=q("pe");if(e)e.textContent="";const r=await fn();if(r){if(e)e.textContent=tr(r)}else{toast("Connected ♥");burst();after()}};
+  if(q("pn1"))q("pn1").onclick=()=>run(()=>pairCreate(q("pr").dataset.sg));
+  if(q("pj1"))q("pj1").onclick=()=>{if(!confirmT("Joining replaces this phone's data with your partner's. Continue?"))return;run(()=>pairJoin(q("pj").value))};
+  if(q("pcp"))q("pcp").onclick=()=>sendText(SY.code);
+  if(q("poff"))q("poff").onclick=()=>{pairOff();toast("Disconnected");after()};
+}
+async function sendText(t){const P=(window.Capacitor&&Capacitor.Plugins)||{};try{if(P.Share)await P.Share.share({text:t});else if(navigator.clipboard){await navigator.clipboard.writeText(t);toast("Copied")}}catch(e){}}
+const segH=e=>{const b=e.target.closest("[data-sv]");if(b){const g=b.parentNode;g.dataset.sg=b.dataset.sv;g.querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b))}};
+/* onboarding */
+function onboard(step){
+  step=step||1;
+  if(step===1)openSheet(`<h2>Welcome ♥</h2><p class="hint">Who is holding this phone?</p><div class="seg two" id="ob1" data-sg="${UI.role||"me"}"><button type="button" class="${UI.role==="her"?"":"on"}" data-sv="me">${esc(A())}</button><button type="button" class="${UI.role==="her"?"on":""}" data-sv="her">${esc(B())}</button></div><div class="row"><button id="obn">Next</button></div>`),$("obn").onclick=()=>{UI.role=$("ob1").dataset.sg;saveUI();onboard(2)};
+  else if(step===2){openSheet(`<h2>Your look</h2><div class="chips">${[["auto","Auto"],["light","Light"],["dark","Dark"]].map(([k,t])=>`<button class="${(UI.mode||"auto")===k?"on":""}" data-md="${k}">${t}</button>`).join("")}</div><div class="sw">${ACC.map(c=>`<button class="swb ${(UI.acc||ACC[0])===c?"on":""}" data-ac="${c}" style="background:${c}"></button>`).join("")}</div><div class="row"><button id="obn">Next</button></div>`);
+    $("sh").querySelectorAll("[data-md],[data-ac]").forEach(b=>b.addEventListener("click",()=>{setTimeout(()=>onboard(2),0)}));$("obn").onclick=()=>onboard(3)}
+  else{openSheet(`<h2>Connect with your love</h2><p class="hint">Create a couple code, or join with your partner's code, so new items appear on both phones live.</p><div class="row"><button id="obp">Pair now</button><button class="o" id="obs">Later</button></div>`);
+    UI.ob=1;saveUI();$("obs").onclick=closeSheet;$("obp").onclick=()=>{closeSheet();openDrawer()}}
+}
 function render(){
   const T=sum(allItems(),i=>i.t),P=sum(allItems(),done),p=T?Math.min(100,P/T*100):0,LL=sum(state.loans,bal),c=state.cfg;
   $("rf").style.strokeDashoffset=C*(1-p/100);
@@ -253,11 +408,13 @@ function render(){
     <details data-grp="p"><summary class="sub" style="text-align:left">Payments (${l.pays.length})</summary><div class="dc">${l.pays.slice().reverse().map(p=>`<div class="log"><div>${fmt(p.a)} DA<small>${fd(p.d)} · ${p.k==="m"?"Monthly":"Extra deposit"}${p.n?" · "+esc(p.n):""}</small></div><button class="g" data-act="ep" data-l="${l.id}" data-p="${p.id}">Edit</button></div>`).join("")}</div></details></div>`}).join("")||'<div class="card sub">No loans yet. Add the money you borrowed and the app will remind you every month.</div>';
   $("log").innerHTML=state.log.map((d,k)=>`<div class="log"><div>+${fmt(d.amt)} DA<small>${fd(d.date)}${d.note?" · "+esc(d.note):""}</small></div><button class="g" data-act="elg" data-x="${k}">Edit</button></div>`).reverse().join("")||'<div class="sub">No entries yet.</div>';
   $("st").textContent="Saved on this device. Use PDF tab > Save backup before reinstalling.";
+  setSt(STAT);
   i18n();
 }
 
 let chain=Promise.resolve();
-function persist(){try{localStorage.setItem("wst2",JSON.stringify(state))}catch(e){$("err").textContent=tr("Could not save. Try again.")}}
+const store=()=>localStorage.setItem("wst2",JSON.stringify(state));
+function persist(){try{store()}catch(e){$("err").textContent=tr("Could not save. Try again.")}pushSoon()}
 const commit=()=>{render();persist();sched();autoBk()};
 
 /* reminders (Android app) */
@@ -266,7 +423,7 @@ async function sched(){
   try{
     let p=await N.checkPermissions();
     if(p.display!=="granted"){if(!state.loans.length)return;p=await N.requestPermissions();if(p.display!=="granted")return}
-    const pe=await N.getPending();if(pe.notifications.length)await N.cancel({notifications:pe.notifications});
+    const pe=await N.getPending();{const o=pe.notifications.filter(x=>x.id<5000);if(o.length)await N.cancel({notifications:o})}
     const list=[],now=new Date();let id=1;
     state.loans.forEach(l=>{let b=bal(l);for(let k=0;k<12&&b>0;k++){
       const d=due(l,nm(l)+k),a=Math.min(l.mo,b);b-=a;
@@ -284,7 +441,7 @@ function sheet0(t,fs,save,del){
   s.innerHTML=`<div class="pn" role="dialog" aria-label="${esc(t)}"><h2>${esc(t)}</h2>${fs.map(f=>f.s?`<div class="fl"><span>${f.l}</span><div class="seg" id="f_${f.k}" data-sg="${f.v}">${f.s.map(o=>`<button type="button" class="${o[0]===f.v?"on":""}" data-sv="${o[0]}">${esc(o[1])}</button>`).join("")}</div></div>`:`<label>${f.l}${f.o?`<select id="f_${f.k}" style="margin:0">${f.o.map(o=>`<option value="${o[0]}"${o[0]===f.v?" selected":""}>${esc(o[1])}</option>`).join("")}</select>`:`<input id="f_${f.k}" type="${f.t||"text"}" ${f.t==="number"?'inputmode="decimal" min="0"':""} value="${esc(f.v==null?"":f.v)}">`}</label>`).join("")}<div class="err" id="se"></div><div class="row"><button class="g" id="sx">Cancel</button>${del?'<button class="d" id="sd">Delete</button>':""}<button id="ss" style="flex:1">Save</button></div></div>`;
   s.hidden=false;
   const v=k=>{const e=$("f_"+k);return e.dataset.sg!==undefined?e.dataset.sg:e.value},close=()=>{s.hidden=true;s.innerHTML=""};
-  $("sx").onclick=close;s.onclick=e=>{if(e.target===s)close();const b=e.target.closest("[data-sv]");if(b){const g=b.parentNode;g.dataset.sg=b.dataset.sv;g.querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b))}};
+  $("sx").onclick=close;s.onclick=e=>{if(e.target===s)close();segH(e)};
   $("ss").onclick=()=>{const r=save(v);if(r){$("se").textContent=tr(r);return}close();commit()};
   if(del){let q=0;$("sd").onclick=e=>{if(!q){q=1;e.target.textContent="Tap again to confirm";return}del();close();commit()}}
   setTimeout(()=>$("f_"+fs[0].k).focus(),60);
@@ -297,14 +454,14 @@ function itemSheet(g,it){
     if(!n)return"Enter a name.";if(!t)return"Enter the cost.";
     if(nw){it=I(n,t,p);g.items.push(it)}else{it.n=n;it.t=t;it.p=p}
     it.w=v("w");if(it.w==="both")burst();it.tk=v("k").trim();
-    if(a){it.p+=a;state.log.push({amt:a,date:today(),al:[[it.id,a]],note:it.n})}
+    if(a){it.p+=a;state.log.push({id:uid(),c:nc(),amt:a,date:today(),al:[[it.id,a]],note:it.n})}
   },nw?null:()=>{g.items=g.items.filter(x=>x!==it)});
 }
 function goalSheet(g){
   const nw=!g;
   sheet(nw?"New big goal":g.n,[{k:"n",l:"Goal name",v:nw?"":g.n},{k:"o",l:"Whose goal is it?",s:[["me",A()],["her",B()],["both","Both"]],v:nw?"me":g.o||"me"},{k:"d",l:"Deadline (any text)",v:nw?"":g.d}],v=>{
     const n=v("n").trim();if(!n)return"Enter a name.";
-    if(nw){if(v("o")==="both")burst();state.goals.push({id:uid(),n,o:v("o"),d:v("d").trim(),items:[]})}else{g.n=n;g.o=v("o");g.d=v("d").trim()}
+    if(nw){if(v("o")==="both")burst();state.goals.push({id:uid(),c:nc(),n,o:v("o"),d:v("d").trim(),items:[]})}else{g.n=n;g.o=v("o");g.d=v("d").trim()}
   },nw?null:()=>{state.goals=state.goals.filter(x=>x!==g)});
 }
 function delLog(i){
@@ -328,7 +485,7 @@ function loanSheet(l){
   sheet(nw?"New loan":"Edit loan",fs,v=>{
     const w=v("w").trim(),a=num(v("a")),m=num(v("m")),d=v("d");
     if(!w)return"Enter who you borrowed from.";if(!a)return"Enter the amount borrowed.";if(!m)return"Enter the monthly payment.";if(!d)return"Pick the next payment date.";
-    if(nw){l={id:uid(),who:w,amt:a,mo:m,fd:d,pays:[]};const r=num(v("r"));if(r)l.pays.push({id:uid(),a:r,d:today(),k:"x",n:"Before tracking"});state.loans.push(l)}
+    if(nw){l={id:uid(),c:nc(),who:w,amt:a,mo:m,fd:d,pays:[]};const r=num(v("r"));if(r)l.pays.push({id:uid(),a:r,d:today(),k:"x",n:"Before tracking"});state.loans.push(l)}
     else Object.assign(l,{who:w,amt:a,mo:m,fd:d});
   },nw?null:()=>{state.loans=state.loans.filter(x=>x!==l)});
 }
@@ -341,10 +498,54 @@ function paySheet(l,k,p){
 }
 
 /* events */
-document.querySelector("nav").onclick=e=>{const b=e.target.closest("[data-tab]");if(!b)return;const pv=tab;tab=b.dataset.tab;document.body.dataset.tab=tab;if(tab==="goals"&&pv!=="goals")document.querySelectorAll("details.goal[open]").forEach(d=>{if(d._a)d._a.cancel();d.open=false});
-  document.querySelectorAll("nav button").forEach(x=>x.classList.toggle("on",x===b));
-  document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("on",t.id==="t-"+tab));
-  if(tab==="share")renderShare();render();window.scrollTo(0,0)};
+const PGS=["home","goals","loans","log","share"],FA={home:"fh",goals:"ag",loans:"al"};
+function go(t){
+  const pv=tab;tab=t;document.body.dataset.tab=t;
+  $("track").style.transform=`translateX(${-PGS.indexOf(t)*100}%)`;
+  document.querySelectorAll("nav button").forEach(x=>x.classList.toggle("on",x.dataset.tab===t));
+  $("fab").dataset.act=FA[t]||"fh";
+  if(t==="goals"&&pv!=="goals")document.querySelectorAll("details.goal[open]").forEach(d=>{if(d._a)d._a.cancel();d.open=false});
+  if(t==="share")renderShare();
+  render();if(pv!==t)$("t-"+t).scrollTop=0;
+}
+document.querySelector("nav").onclick=e=>{const b=e.target.closest("[data-tab]");if(b)go(b.dataset.tab)};
+(()=>{const tr=$("track");let x0=0,y0=0,dx=0,lock=0,on=0;
+  const P=()=>PGS.indexOf(tab);
+  tr.addEventListener("touchstart",e=>{if(e.touches.length>1)return;x0=e.touches[0].clientX;y0=e.touches[0].clientY;dx=0;lock=0;on=1},{passive:true});
+  tr.addEventListener("touchmove",e=>{if(!on)return;const t=e.touches[0],mx=t.clientX-x0,my=t.clientY-y0;
+    if(!lock&&(Math.abs(mx)>8||Math.abs(my)>8)){lock=Math.abs(mx)>Math.abs(my)?1:2;if(lock===1)tr.style.transition="none"}
+    if(lock===1){const i=P();dx=((i===0&&mx>0)||(i===PGS.length-1&&mx<0))?mx/3:mx;tr.style.transform=`translateX(calc(${-i*100}% + ${dx}px))`;if(e.cancelable)e.preventDefault()}},{passive:false});
+  const end=()=>{if(!on)return;on=0;if(lock===1){tr.style.transition="";const i=P();go(PGS[dx<-55?Math.min(i+1,PGS.length-1):dx>55?Math.max(i-1,0):i])}};
+  tr.addEventListener("touchend",end);tr.addEventListener("touchcancel",end)})();
+/* appearance + drawer */
+const ACC=["#ff4f81","#8e6bf2","#1fb58a","#ff8a3d","#2f8bff"];
+let UI={};try{UI=JSON.parse(localStorage.getItem("wui")||"{}")}catch(e){}
+const saveUI=()=>{try{localStorage.setItem("wui",JSON.stringify(UI))}catch(e){}};
+function applyUI(){const r=document.documentElement;if(UI.mode==="light"||UI.mode==="dark")r.dataset.theme=UI.mode;else delete r.dataset.theme;r.style.setProperty("--rose",UI.acc||"#ff4f81");const m=document.querySelector("meta[name=theme-color]");if(m)m.content=UI.acc||"#ff4f81"}
+const roleName=()=>UI.role==="me"?A():UI.role==="her"?B():"";
+function drawer(){
+  const pr=roleName(),st=SY.code?(STAT==="err"?"Offline":"Live"):"";
+  $("drp").innerHTML=`<h2 class="sh2">Settings</h2><div class="dp"><span class="av2">${esc((pr||A())[0]||"♥")}</span><div><b>${esc(A())} ♥ ${esc(B())}</b><small>${pr?tr("You are")+" "+esc(pr):"Wedding Planner"}</small></div></div>
+  <h2>Pair with partner</h2><div class="pcard">${pairBlock()}</div>
+  <h2>Theme</h2><div class="chips">${[["auto","Auto"],["light","Light"],["dark","Dark"]].map(([k,t])=>`<button class="${(UI.mode||"auto")===k?"on":""}" data-md="${k}">${t}</button>`).join("")}</div>
+  <div class="sw">${ACC.map(c=>`<button class="swb ${(UI.acc||ACC[0])===c?"on":""}" data-ac="${c}" style="background:${c}" aria-label="${c}"></button>`).join("")}</div>
+  <h2>Language</h2><div class="chips"><button class="${lang==="en"?"on":""}" data-l="en">English</button><button class="${lang==="fr"?"on":""}" data-l="fr">Français</button></div>
+  <h2>Data</h2><button class="dri" data-act="bk2">💾 Backup</button><button class="dri" data-act="rs2">📂 Restore</button><button class="dri" data-act="pdf2">📄 Send PDF</button>`;
+  pairWire($("drp"),drawer);i18n();
+}
+const openDrawer=()=>{drawer();$("dr").classList.add("on");$("menu").classList.add("on")},closeDrawer=()=>{$("dr").classList.remove("on");$("menu").classList.remove("on")};
+$("menu").onclick=openDrawer;$("dr").querySelector(".bk").onclick=closeDrawer;
+const closeSheet=()=>{const s=$("sh");s.hidden=true;s.innerHTML=""};
+let exitArm=0;
+function goBack(){
+  if(!$("sh").hidden)return closeSheet();
+  if($("dr").classList.contains("on"))return closeDrawer();
+  if(tab!=="home")return go("home");
+  const AP=window.Capacitor&&Capacitor.Plugins&&Capacitor.Plugins.App;
+  if(exitArm&&AP)return AP.exitApp();
+  exitArm=1;toast("Press back again to exit");setTimeout(()=>exitArm=0,2000);
+}
+{const AP=window.Capacitor&&Capacitor.Plugins&&Capacitor.Plugins.App;if(AP)AP.addListener("backButton",goBack)}
 document.querySelector(".chips").onclick=e=>{const b=e.target.closest("[data-q]");if(!b)return;$("amt").value=num($("amt").value)+num(b.dataset.q)};
 $("dst").onchange=e=>{dst=e.target.value};
 $("add").onclick=()=>{
@@ -358,7 +559,7 @@ $("add").onclick=()=>{
     for(const it of items){if(r<=0)break;const a=Math.min(r,Math.max(0,it.t-it.p));if(a>0){it.p+=a;r-=a;al.push([it.id,a])}}
     if(r>0){const l=items[items.length-1];l.p+=r;al.push([l.id,r])}
   }else{const it=items.find(i=>i.id===dst);it.p+=v;al=[[it.id,v]];note=it.n}
-  state.log.push({amt:v,date:today(),al,note});
+  state.log.push({id:uid(),c:nc(),amt:v,date:today(),al,note});
   $("amt").value="";commit();toast("+"+fmt(v)+" DA saved · "+Math.round(sum(allItems(),done)/Math.max(1,sum(allItems(),i=>i.t))*100)+"% of the plan");
 };
 $("amt").addEventListener("keydown",e=>{if(e.key==="Enter")$("add").click()});
@@ -374,6 +575,11 @@ document.addEventListener("click",e=>{
   else if(a==="el"&&l)loanSheet(l);
   else if(a==="lp"&&l)paySheet(l,"m");
   else if(a==="lx"&&l)paySheet(l,"x");
+  else if(a==="fh"){const m=$("amt");m.scrollIntoView({behavior:"smooth",block:"center"});setTimeout(()=>m.focus(),350)}
+  else if(a==="pair")openDrawer();
+  else if(a==="bk2"){closeDrawer();saveBackup()}
+  else if(a==="rs2"){closeDrawer();$("rs0").click()}
+  else if(a==="pdf2"){closeDrawer();go("share");setTimeout(()=>$("pdf")&&$("pdf").click(),80)}
   else if(a==="ep"&&l)paySheet(l,null,l.pays.find(x=>x.id===b.dataset.p));
 });
 
@@ -389,7 +595,7 @@ function renderShare0(){
   <label class="chk"><input type="checkbox" data-c="si" ${ck("si")}> Show items under each goal</label>
   <label class="chk"><input type="checkbox" data-c="sh" ${ck("sh")}> Show latest savings</label>
   <button id="pdf" style="width:100%;margin-top:10px">Create PDF and send</button></section>
-  <section class="card"><h2>Backup &amp; Restore</h2><div class="row"><button id="bk">Backup</button><button class="o" id="rsb">Restore</button></div><input type="file" id="rs" accept="*/*" hidden></section>`;
+  <section class="card"><h2>Backup &amp; Restore</h2><div class="row"><button id="bk">Backup</button><button class="o" id="rsb">Restore</button></div></section>`;
 }
 $("t-share").addEventListener("input",e=>{const k=e.target.dataset.c;if(!k)return;state.cfg[k]=e.target.type==="checkbox"?e.target.checked:e.target.value;persist();render()});
 $("t-share").addEventListener("click",e=>{
@@ -397,12 +603,9 @@ $("t-share").addEventListener("click",e=>{
   if(t){state.cfg.theme=t.dataset.th;persist();renderShare();return}
   if(e.target.id==="pdf")sendFile("Wedding-Plan-"+today()+".pdf",btoa(buildPdf()),"application/pdf");
   if(e.target.id==="bk")saveBackup();
-  if(e.target.id==="rsb")$("rs").click();
+  if(e.target.id==="rsb")$("rs0").click();
 });
-$("t-share").addEventListener("change",e=>{
-  if(e.target.id!=="rs"||!e.target.files[0])return;
-  const r=new FileReader();r.onload=()=>applyBackup(r.result);r.readAsText(e.target.files[0]);e.target.value="";
-});
+$("rs0").addEventListener("change",e=>{if(!e.target.files[0])return;const r=new FileReader();r.onload=()=>applyBackup(r.result);r.readAsText(e.target.files[0]);e.target.value=""});
 function applyBackup(t){
   try{const d=JSON.parse(t);if(!Array.isArray(d.goals))throw 0;
     state={goals:d.goals,log:d.log||[],loans:d.loans||[],cfg:Object.assign(CFG(),d.cfg)};fix();persist();toast("Restoring…");setTimeout(()=>location.reload(),900)}catch(x){alertT("This is not a valid backup file.")}
@@ -505,8 +708,8 @@ function openD(d,on){
   if(d._a){d._a.onfinish=null;d._a.cancel()}
   if(!c||RM()){d.open=on;return}
   c.style.overflow="hidden";
-  if(on){d.open=true;const h=c.offsetHeight;d._a=c.animate([{height:"0px",opacity:0},{height:h+"px",opacity:1}],{duration:340,easing:"cubic-bezier(.2,.8,.2,1)"});d._a.onfinish=()=>{c.style.overflow=""}}
-  else{const h=c.offsetHeight;d._a=c.animate([{height:h+"px",opacity:1},{height:"0px",opacity:0}],{duration:260,easing:"ease-in-out"});d._a.onfinish=()=>{d.open=false;c.style.overflow=""}}
+  if(on){d.open=true;const h=c.offsetHeight;d._a=c.animate([{height:"0px",opacity:0},{height:h+"px",opacity:1}],{duration:450,easing:"cubic-bezier(.2,.8,.2,1)"});d._a.onfinish=()=>{c.style.overflow=""}}
+  else{const h=c.offsetHeight;d._a=c.animate([{height:h+"px",opacity:1},{height:"0px",opacity:0}],{duration:380,easing:"ease-in-out"});d._a.onfinish=()=>{d.open=false;c.style.overflow=""}}
 }
 document.addEventListener("click",e=>{
   const sm=e.target.closest("summary");if(!sm||e.target.closest("[data-act]"))return;
@@ -521,11 +724,13 @@ document.addEventListener("pointerdown",e=>{
   p.className="rp";p.style.cssText=`width:${z}px;height:${z}px;left:${e.clientX-r.left-z/2}px;top:${e.clientY-r.top-z/2}px`;t.appendChild(p);setTimeout(()=>p.remove(),650)
 },true);
 document.addEventListener("pointerdown",e=>{if(Math.random()<.35)love(e.clientX,e.clientY)},true);
-document.querySelector(".lg").onclick=e=>{const b=e.target.closest("[data-l]");if(!b)return;lang=b.dataset.l;try{localStorage.setItem("wl",lang)}catch(x){}setLang();render();if(tab==="share")renderShare()};
+document.addEventListener("click",e=>{const b=e.target.closest("[data-l]");if(b){lang=b.dataset.l;try{localStorage.setItem("wl",lang)}catch(x){}setLang();render();if(tab==="share")renderShare();if($("dr").classList.contains("on"))drawer()}
+  const m=e.target.closest("[data-md]");if(m){UI.mode=m.dataset.md;saveUI();applyUI();drawer()}
+  const c=e.target.closest("[data-ac]");if(c){UI.acc=c.dataset.ac;saveUI();applyUI();drawer()}});
 {const AR=["حُبُّكما حكايةٌ كتبها القدرُ بأجملِ الحروف", "معًا يصيرُ البيتُ وطنًا، ويصيرُ العمرُ أجمل", "قلبانِ التقيا فصارَ الكونُ أوسعَ وأجمل", "بارَكَ اللهُ لكما، وبارَكَ عليكما، وجمعَ بينكما في خير", "الحُبُّ أن تجدَ في عينَيْ مَن تُحبُّ الوطنَ والأمان", "كلُّ خطوةٍ نحوَ الحُلمِ أجملُ حينَ تَمشيانِها معًا", "ما أجملَ أن يجمعَ اللهُ قلبَيْنِ على المحبّةِ والمودّة", "على بركةِ اللهِ يبدأُ حُلمُكما، وبالحُبِّ يكتمل", "ليكنْ بيتُكما سَكَنًا ومودّةً ورحمة", "أجملُ البيوتِ ما بُنِيَ لَبِنةً لَبِنةً بالحبِّ والصبر", "يا لَحُسنِ الدنيا حينَ يجتمعُ فيها اثنانِ على حُبٍّ وصِدق", "كلُّ يومٍ معكَ حكايةٌ جديدة، وكلُّ حكايةٍ أجملُ من أختها"],sp=$("sp");let k=Math.random()*AR.length|0;try{if(k===+localStorage.getItem("sl"))k=(k+1)%AR.length;localStorage.setItem("sl",k)}catch(e){}
-$("spt").textContent=AR[k];$("spn").textContent=A()+" ♥ "+B();sp.onclick=()=>sp.remove();setTimeout(()=>sp.remove(),5200)}
-document.body.dataset.tab="home";setLang();
-fix();render();sched();
+$("spt").textContent=AR[k];$("spn").textContent=A()+" ♥ "+B();const done=()=>{if(sp.isConnected){sp.remove();if(!UI.ob)onboard(1)}};sp.onclick=done;setTimeout(done,5200)}
+applyUI();setLang();startSync();
+fix();go("home");sched();
 </script>
 </body>
 </html>
