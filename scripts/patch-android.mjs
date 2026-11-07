@@ -28,6 +28,7 @@ g = g.replace(/versionCode\s+\d+/, `versionCode ${run}`)
 fs.writeFileSync(gp, g);
 // ---- app icon (adaptive + legacy) and splash screen ----
 const res = "android/app/src/main/res";
+try {
 if (fs.existsSync("icons/res")) {
   fs.cpSync("icons/res", res, { recursive: true, force: true });
   console.log("Installed launcher icons");
@@ -40,5 +41,8 @@ if (fs.existsSync("icons/splash")) {
     fs.copyFileSync(land ? "icons/splash/splash-land.png" : "icons/splash/splash-port.png", f);
   }
   console.log("Installed splash screen");
+}
+} catch (e) {
+  console.log("Icons/splash skipped (build continues with defaults): " + e.message);
 }
 console.log("Patched manifest + version (build " + run + ")");

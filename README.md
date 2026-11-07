@@ -43,5 +43,9 @@ Because the password is in the repo, **keep the repo private**. For your own key
 Your new app icon (adaptive + round + old-style) and a matching splash screen, installed automatically by `scripts/patch-android.mjs`.
 Capacitor 6 with the plugins your app uses: App, Filesystem, Haptics, Local Notifications (loan reminders), Preferences, Share, Splash Screen, Status Bar. The build script adds the notification and storage permissions.
 
+## If the build fails
+- **Only one workflow file should exist** in `.github/workflows/`: `build-apk.yml`. Delete any older workflow files from earlier attempts, because they also run on every push and can fail with errors like "could not determine executable to run".
+- Open the failed run, click the red step, and send the red error text.
+
 ## Not tested
 This was written without internet access, so the build itself has not been run. If the first Actions run fails, open the failed step, copy the red error, and send it to me.
